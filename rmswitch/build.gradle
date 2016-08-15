@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'rm-switch'
+
+    publishedGroupId = 'com.rm'
+    libraryName = 'RMSwitch'
+    artifact = 'rm-switch'
+
+    libraryDescription = 'A simple and customizable Switch View'
+
+    siteUrl = 'https://github.com/RiccardoMoro/RMSwitch'
+    gitUrl = 'https://github.com/RiccardoMoro/RMSwitch.git'
+
+    libraryVersion = '1.0'
+
+    developerId = 'RiccardoMoro'
+    developerName = 'Riccardo Moro'
+    developerEmail = 'riccardomoro.rm@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
@@ -23,3 +47,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.1.1'
 }
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
