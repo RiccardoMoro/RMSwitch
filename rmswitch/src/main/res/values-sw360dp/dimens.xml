@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="rm_switch_standard_height">8dp</dimen>
+    <dimen name="rm_switch_standard_width">17.6dp</dimen>
+</resources>
