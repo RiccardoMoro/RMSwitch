@@ -2,11 +2,11 @@ apply plugin: 'com.android.library'
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'rm-switch'
+    bintrayName = 'rmswitch'
 
     publishedGroupId = 'com.rm'
-    libraryName = 'RMSwitch'
-    artifact = 'rm-switch'
+    libraryName = 'rmswitch'
+    artifact = 'rmswitch'
 
     libraryDescription = 'A simple and customizable Switch View'
 
