@@ -9,7 +9,7 @@ Download
 ------
 ####Gradle:
 ```groovy
-compile 'com.rm:rmswitch:1.0'
+compile 'com.rm:rmswitch:1.0.1'
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 
 To see how it looks in the preview screen of Android Studio, build your project first
 
-And this in your Activty
+And this in your Activity
 ```java
 public class MainActivity extends AppCompatActivity {
     RMSwitch mSwitch;
@@ -55,16 +55,16 @@ public class MainActivity extends AppCompatActivity {
 ```
 
 ####Supported Attributes
-| XML Attribute              	| Java method                                                     	| Description                                                                                                     	| Default value                                      	|
-|----------------------------	|-----------------------------------------------------------------	|-----------------------------------------------------------------------------------------------------------------	|----------------------------------------------------	|
-| RMChecked                  	| setChecked(boolean checked)                                     	| The initial state of the Switch, if checked or not                                                              	| false                                              	|
-| RMEnabled                  	| setEnabled(boolean enabled)                                     	| If not enabled, the Switch will not be clickable, but it is still possible to change its state programmatically 	| true                                               	|
-| RMForceAspectRatio         	| setForceAspectRatio(boolean forceAspectRatio)                   	| Force the Switch aspect ratio                                                                                   	| true                                               	|
-| RMSwitchBkgCheckedColor    	| setSwitchBkgCheckedColor(@ColorInt int color)                   	| The background color of the Switch if checked                                                                   	| your current theme colorControlHighlight attribute 	|
-| RMSwitchBkgNotCheckedColor 	| setSwitchBkgNotCheckedColor(@ColorInt int color)                	| The background color of the Switch if not checked                                                               	| the same as RMSwitchBkgCheckedColor                	|
-| RMSwitchCheckedColor       	| setSwitchToggleCheckedColor(@ColorInt int color)                	| The color of the Switch toggle if checked                                                                       	| your current theme colorAccent attribute           	|
-| RMSwitchNotCheckedColor    	| setSwitchToggleNotCheckedColor(@ColorInt int color)             	| The color of the Switch toggle if not checked                                                                   	| white                                              	|
-| RMSwitchCheckedImage       	| setSwitchToggleCheckedDrawableRes(@DrawableRes int drawable)    	| The image to be shown on the toggle if checked                                                                  	| none                                               	|
-| RMSwitchNotCheckedImage    	| setSwitchToggleNotCheckedDrawableRes(@DrawableRes int drawable) 	| The image to be shown on the toggle if not checked                                                              	| none                                               	|
+| XML Attribute                 | Java method                                                     	| Description                                                                                                     	| Default value                                      	|
+|-------------------------	    |-----------------------------------------------------------------	|-----------------------------------------------------------------------------------------------------------------	|----------------------------------------------------	|
+| checked                  	    | setChecked(boolean checked)                                     	| The initial state of the Switch, if checked or not                                                              	| false                                              	|
+| enabled                  	    | setEnabled(boolean enabled)                                     	| If not enabled, the Switch will not be clickable, but it is still possible to change its state programmatically 	| true                                               	|
+| forceAspectRatio         	    | setForceAspectRatio(boolean forceAspectRatio)                   	| Force the Switch aspect ratio                                                                                   	| true                                               	|
+| switchBkgCheckedColor    	    | setSwitchBkgCheckedColor(@ColorInt int color)                   	| The background color of the Switch if checked                                                                   	| your current theme colorControlHighlight attribute 	|
+| switchBkgNotCheckedColor 	    | setSwitchBkgNotCheckedColor(@ColorInt int color)                	| The background color of the Switch if not checked                                                               	| the same as RMSwitchBkgCheckedColor                	|
+| switchToggleCheckedColor      | setSwitchToggleCheckedColor(@ColorInt int color)                	| The color of the Switch toggle if checked                                                                       	| your current theme colorAccent attribute           	|
+| switchToggleNotCheckedColor   | setSwitchToggleNotCheckedColor(@ColorInt int color)             	| The color of the Switch toggle if not checked                                                                   	| white                                              	|
+| switchToggleCheckedImage      | setSwitchToggleCheckedDrawableRes(@DrawableRes int drawable)    	| The image to be shown on the toggle if checked                                                                  	| none                                               	|
+| switchToggleNotCheckedImage   | setSwitchToggleNotCheckedDrawableRes(@DrawableRes int drawable) 	| The image to be shown on the toggle if not checked                                                              	| the same as RMSwitchCheckedImage                      |
 
 The changes between the Switch states will be automatically cross-faded, to obtain a smooth experience

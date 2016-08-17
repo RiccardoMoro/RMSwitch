@@ -150,42 +150,42 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
         try {
             // Get the checked flag
             mIsChecked = typedArray.getBoolean(
-                    R.styleable.RMSwitch_RMChecked, false);
+                    R.styleable.RMSwitch_checked, false);
 
             // Keep aspect ratio flag
             mForceAspectRatio = typedArray.getBoolean(
-                    R.styleable.RMSwitch_RMForceAspectRatio, true);
+                    R.styleable.RMSwitch_forceAspectRatio, true);
 
             // If the switch is enabled
             mIsEnabled = typedArray.getBoolean(
-                    R.styleable.RMSwitch_RMEnabled, true);
+                    R.styleable.RMSwitch_enabled, true);
 
 
             //Get the background checked and not checked color
             mBkgCheckedColor = typedArray.getColor(
-                    R.styleable.RMSwitch_RMSwitchBkgCheckedColor,
+                    R.styleable.RMSwitch_switchBkgCheckedColor,
                     Utils.getDefaultBackgroundColor(context));
 
             mBkgNotCheckedColor = typedArray.getColor(
-                    R.styleable.RMSwitch_RMSwitchBkgNotCheckedColor,
+                    R.styleable.RMSwitch_switchBkgNotCheckedColor,
                     mBkgCheckedColor);
 
 
             //Get the toggle checked and not checked colors
             mToggleCheckedColor = typedArray.getColor(
-                    R.styleable.RMSwitch_RMSwitchCheckedColor,
+                    R.styleable.RMSwitch_switchToggleCheckedColor,
                     Utils.getAccentColor(context));
 
             mToggleNotCheckedColor = typedArray.getColor(
-                    R.styleable.RMSwitch_RMSwitchNotCheckedColor,
+                    R.styleable.RMSwitch_switchToggleNotCheckedColor,
                     Color.WHITE);
 
 
             // Get the toggle checked and not checked images
             mToggleCheckedDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMSwitch_RMSwitchCheckedImage, 0);
+                    R.styleable.RMSwitch_switchToggleCheckedImage, 0);
             mToggleNotCheckedDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMSwitch_RMSwitchNotCheckedImage, 0);
+                    R.styleable.RMSwitch_switchToggleNotCheckedImage, mToggleCheckedDrawableResource);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -234,10 +234,10 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
                 Utils.getAccentColor(getContext()));
         mToggleNotCheckedColor = prevState.getInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR,
                 Color.WHITE);
-        mToggleCheckedDrawableResource = prevState.getInt(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES,
-                0);
-        mToggleNotCheckedDrawableResource = prevState.getInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES,
-                0);
+        mToggleCheckedDrawableResource = prevState
+                .getInt(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES, 0);
+        mToggleNotCheckedDrawableResource = prevState
+                .getInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES, mToggleCheckedDrawableResource);
 
         setChecked(prevState.getBoolean(BUNDLE_KEY_CHECKED, false));
         notifyObservers();

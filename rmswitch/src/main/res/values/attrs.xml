@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="RMSwitch">
-        <attr name="RMChecked" format="boolean" />
-        <attr name="RMEnabled" format="boolean" />
-        <attr name="RMForceAspectRatio" format="boolean" />
-        <attr name="RMSwitchBkgCheckedColor" format="color" />
-        <attr name="RMSwitchBkgNotCheckedColor" format="color" />
-        <attr name="RMSwitchCheckedColor" format="color" />
-        <attr name="RMSwitchNotCheckedColor" format="color" />
-        <attr name="RMSwitchCheckedImage" format="integer" />
-        <attr name="RMSwitchNotCheckedImage" format="integer" />
+        <attr name="checked" format="boolean" />
+        <attr name="enabled" format="boolean" />
+        <attr name="forceAspectRatio" format="boolean" />
+        <attr name="switchBkgCheckedColor" format="color" />
+        <attr name="switchBkgNotCheckedColor" format="color" />
+        <attr name="switchToggleCheckedColor" format="color" />
+        <attr name="switchToggleNotCheckedColor" format="color" />
+        <attr name="switchToggleCheckedImage" format="reference" />
+        <attr name="switchToggleNotCheckedImage" format="reference" />
     </declare-styleable>
 </resources>

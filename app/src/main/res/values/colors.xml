@@ -9,4 +9,8 @@
     <color name="transparent">@android:color/transparent</color>
     <color name="red">#F44336</color>
     <color name="green">#4CAF50</color>
+    <color name="pink">#FF80AB</color>
+    <color name="pinkDark">#EC407A</color>
+    <color name="blue">#2196F3</color>
+    <color name="blueDark">#1976D2</color>
 </resources>
