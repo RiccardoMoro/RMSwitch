@@ -111,6 +111,52 @@
                     android:layout_marginTop="4dp"
                     android:textSize="18sp" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <com.rm.rmswitch.RMTristateSwitch
+                    android:id="@+id/rm_triswitch4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txt_rm_triswitch_state4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_triswitch4"
+                    android:layout_alignStart="@+id/rm_triswitch4"
+                    android:layout_below="@+id/rm_triswitch4"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <com.rm.rmswitch.RMTristateSwitch
+                    android:id="@+id/rm_triswitch5"
+                    android:layout_width="86dp"
+                    android:layout_height="40dp"
+                    app:switchBkgLeftColor="@color/greyDark"
+                    app:switchToggleLeftColor="@color/greyDark"
+                    app:switchToggleMiddleColor="@color/greyDark"
+                    app:switchToggleRightColor="@color/greyDark"/>
+
+                <TextView
+                    android:id="@+id/txt_rm_triswitch_state5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_triswitch5"
+                    android:layout_alignStart="@+id/rm_triswitch5"
+                    android:layout_below="@+id/rm_triswitch5"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout

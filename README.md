@@ -15,11 +15,20 @@ compile 'com.rm:rmswitch:1.0.1'
 ## Usage
 
 To use it, just add this to your layout file
+
+### Two-states switch
 ```xml
     <com.rm.rmswitch.RMSwitch
                 android:id="@+id/your_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+```
+### Three-state switch
+```xml
+    <com.rm.rmswitch.RMTristateSwitch
+                        android:id="@+id/rm_triswitch1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 ```
 
 ... if you need to use this View's custom xml attributes (shown in a table below) do not forget to add this to your root layout

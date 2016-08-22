@@ -30,6 +30,8 @@ import java.util.List;
 /**
  * Created by Riccardo Moro on 18/08/2016.
  */
+// TODO Update readme: all abount tristate
+// TODO Add slim switch design
 public class RMTristateSwitch extends RelativeLayout implements TristateCheckable, View.OnClickListener {
     private static final String BUNDLE_KEY_STATE = "bundle_key_state";
     private static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
@@ -447,16 +449,19 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
 
     public void setSwitchToggleLeftDrawableRes(@DrawableRes int drawable) {
         mToggleLeftDrawableResource = drawable;
+        setMissingImages();
         setupSwitchAppearance();
     }
 
     public void setSwitchToggleMiddleDrawableRes(@DrawableRes int drawable) {
         mToggleMiddleDrawableResource = drawable;
+        setMissingImages();
         setupSwitchAppearance();
     }
 
     public void setSwitchToggleRightDrawableRes(@DrawableRes int drawable) {
         mToggleRightDrawableResource = drawable;
+        setMissingImages();
         setupSwitchAppearance();
     }
 
