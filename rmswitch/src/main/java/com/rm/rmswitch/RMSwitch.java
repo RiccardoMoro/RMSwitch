@@ -45,16 +45,16 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
     /**
      * The Toggle view, the only moving part of the switch
      */
-    private SquareImageView mImgToggle;
+    private final SquareImageView mImgToggle;
     /**
      * The background image of the switch
      */
-    private ImageView mImgBkg;
+    private final ImageView mImgBkg;
 
     /**
      * The switch container Layout
      */
-    private RelativeLayout mContainerLayout;
+    private final RelativeLayout mContainerLayout;
 
     // View variables
     private List<RMSwitchObserver> mObservers;
@@ -141,7 +141,6 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
         setLayoutTransition(sLayoutTransition);
         mContainerLayout.setLayoutTransition(sLayoutTransition);
 
-        // Set the background
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.RMSwitch,
@@ -186,6 +185,10 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
                     R.styleable.RMSwitch_switchToggleCheckedImage, 0);
             mToggleNotCheckedDrawableResource = typedArray.getResourceId(
                     R.styleable.RMSwitch_switchToggleNotCheckedImage, mToggleCheckedDrawableResource);
+
+            // If set the not checked drawable and not the checked one, copy the first
+            if (mToggleCheckedDrawableResource == 0 && mToggleNotCheckedDrawableResource != 0)
+                mToggleCheckedDrawableResource = mToggleNotCheckedDrawableResource;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,6 +246,7 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
         notifyObservers();
     }
 
+    // TODO Fix forceAspectRatio
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
@@ -310,6 +314,11 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
         setupSwitchAppearance();
     }
 
+    public void setForceAspectRatio(boolean forceAspectRatio) {
+        mForceAspectRatio = forceAspectRatio;
+        setupSwitchAppearance();
+    }
+
     public void setSwitchBkgCheckedColor(@ColorInt int color) {
         mBkgCheckedColor = color;
         setupSwitchAppearance();
@@ -340,10 +349,6 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
         setupSwitchAppearance();
     }
 
-    public void setForceAspectRatio(boolean forceAspectRatio) {
-        mForceAspectRatio = forceAspectRatio;
-        setupSwitchAppearance();
-    }
 
     // Get the switch setup
     @ColorInt
@@ -435,7 +440,7 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
     /**
      * Setup all the switch custom attributes appearance
      */
-    public void setupSwitchAppearance() {
+    private void setupSwitchAppearance() {
         // Create the background drawables
         Drawable bkgDrawable =
                 ContextCompat.getDrawable(getContext(), R.drawable.rounded_border_bkg);
@@ -469,17 +474,17 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
         // Set the background drawable
         if (mImgBkg.getDrawable() != null) {
             // Create the transition for the background
-            TransitionDrawable bkgdTransitionDrawable = new TransitionDrawable(new Drawable[]{
+            TransitionDrawable bkgTransitionDrawable = new TransitionDrawable(new Drawable[]{
                     // If it was a transition drawable, take the last one of it's drawables
                     mImgBkg.getDrawable() instanceof TransitionDrawable ?
                             ((TransitionDrawable) mImgBkg.getDrawable()).getDrawable(1) :
                             mImgBkg.getDrawable(),
                     bkgDrawable
             });
-            bkgdTransitionDrawable.setCrossFadeEnabled(true);
+            bkgTransitionDrawable.setCrossFadeEnabled(true);
             // Set the transitionDrawable and start the animation
-            mImgBkg.setImageDrawable(bkgdTransitionDrawable);
-            bkgdTransitionDrawable.startTransition(ANIMATION_DURATION);
+            mImgBkg.setImageDrawable(bkgTransitionDrawable);
+            bkgTransitionDrawable.startTransition(ANIMATION_DURATION);
         } else {
             // No previous background image, just set the new one
             mImgBkg.setImageDrawable(bkgDrawable);
@@ -538,29 +543,36 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
 
         // Add the new alignment rule
         toggleParams.addRule(
-                mIsChecked ?
-                        RelativeLayout.ALIGN_PARENT_RIGHT :
-                        RelativeLayout.ALIGN_PARENT_LEFT);
+                getCurrentLayoutRule());
 
         // Remove the previous alignment rule
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
 
             // RelativeLayout.LayoutParams.removeRule require api >= 17
             toggleParams.removeRule(
-                    mIsChecked ?
-                            RelativeLayout.ALIGN_PARENT_LEFT :
-                            RelativeLayout.ALIGN_PARENT_RIGHT);
+                    getPreviousLayoutRule());
         } else {
 
             // If API < 17 manually set the previously active rule with anchor 0 to remove it
-            if (isChecked()) {
-                toggleParams.addRule(ALIGN_PARENT_LEFT, 0);
-            } else {
-                toggleParams.addRule(ALIGN_PARENT_RIGHT, 0);
-            }
+            toggleParams.addRule(getPreviousLayoutRule(), 0);
         }
 
         mImgToggle.setLayoutParams(toggleParams);
+    }
+
+    // Get the current layout rule to display the toggle in its correct position
+    private int getCurrentLayoutRule() {
+        return
+                mIsChecked ?
+                        ALIGN_PARENT_RIGHT :
+                        ALIGN_PARENT_LEFT;
+    }
+
+    // Get the previous layout rule based on the current state and the toggle direction
+    private int getPreviousLayoutRule() {
+        return mIsChecked ?
+                ALIGN_PARENT_LEFT :
+                ALIGN_PARENT_RIGHT;
     }
 
     // Checkable interface methods

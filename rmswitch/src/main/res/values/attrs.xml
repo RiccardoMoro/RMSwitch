@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="enabled" format="boolean" />
+    <attr name="forceAspectRatio" format="boolean" />
+
     <declare-styleable name="RMSwitch">
         <attr name="checked" format="boolean" />
-        <attr name="enabled" format="boolean" />
-        <attr name="forceAspectRatio" format="boolean" />
+        <attr name="enabled" />
+        <attr name="forceAspectRatio" />
+
         <attr name="switchBkgCheckedColor" format="color" />
         <attr name="switchBkgNotCheckedColor" format="color" />
+
         <attr name="switchToggleCheckedColor" format="color" />
         <attr name="switchToggleNotCheckedColor" format="color" />
+
         <attr name="switchToggleCheckedImage" format="reference" />
         <attr name="switchToggleNotCheckedImage" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RMTristateSwitch">
+        <attr name="state" format="enum">
+            <enum name="left" value="0" />
+            <enum name="middle" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+        <attr name="enabled" />
+        <attr name="forceAspectRatio" />
+        <attr name="right_to_left" format="boolean" />
+
+        <attr name="switchBkgRightColor" format="color" />
+        <attr name="switchBkgMiddleColor" format="color" />
+        <attr name="switchBkgLeftColor" format="color" />
+
+        <attr name="switchToggleRightColor" format="color" />
+        <attr name="switchToggleMiddleColor" format="color" />
+        <attr name="switchToggleLeftColor" format="color" />
+
+        <attr name="switchToggleRightImage" format="reference" />
+        <attr name="switchToggleMiddleImage" format="reference" />
+        <attr name="switchToggleLeftImage" format="reference" />
     </declare-styleable>
 </resources>

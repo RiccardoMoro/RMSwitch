@@ -1,218 +1,323 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.rm.switchsample.ActivityMain">
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/rm_switch7"
-                android:layout_width="56dp"
-                android:layout_height="40dp"
-                app:checked="true"
-                app:forceAspectRatio="false"
-                app:switchBkgCheckedColor="@color/green"
-                app:switchBkgNotCheckedColor="@color/red"
-                app:switchToggleCheckedColor="@color/green"
-                app:switchToggleCheckedImage="@drawable/happy"
-                app:switchToggleNotCheckedColor="@color/red"
-                app:switchToggleNotCheckedImage="@drawable/sad" />
-
-            <TextView
-                android:id="@+id/txt_rm_switch_state7"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/rm_switch7"
-                android:layout_alignStart="@+id/rm_switch7"
-                android:layout_below="@+id/rm_switch7"
-                android:layout_marginTop="4dp"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                android:layout_marginTop="12dp">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+                <com.rm.rmswitch.RMTristateSwitch
+                    android:id="@+id/rm_triswitch1"
+                    android:layout_width="86dp"
+                    android:layout_height="40dp"
+                    app:forceAspectRatio="false"
+                    app:state="left"
+                    app:switchBkgLeftColor="@color/red"
+                    app:switchBkgMiddleColor="@color/grey"
+                    app:switchBkgRightColor="@color/green"
+                    app:switchToggleLeftColor="@color/red"
+                    app:switchToggleLeftImage="@drawable/sad"
+                    app:switchToggleMiddleColor="@color/grey"
+                    app:switchToggleMiddleImage="@drawable/neutral"
+                    app:switchToggleRightColor="@color/green"
+                    app:switchToggleRightImage="@drawable/happy" />
+
+                <TextView
+                    android:id="@+id/txt_rm_triswitch_state1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_triswitch1"
+                    android:layout_alignStart="@+id/rm_triswitch1"
+                    android:layout_below="@+id/rm_triswitch1"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <com.rm.rmswitch.RMTristateSwitch
+                    android:id="@+id/rm_triswitch2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:state="middle"
+                    app:switchBkgLeftColor="@color/pink"
+                    app:switchBkgMiddleColor="@color/grey"
+                    app:switchBkgRightColor="@color/blue"
+                    app:switchToggleLeftColor="@color/pinkDark"
+                    app:switchToggleLeftImage="@drawable/female"
+                    app:switchToggleMiddleColor="@color/greyDark"
+                    app:switchToggleMiddleImage="@drawable/transgender"
+                    app:switchToggleRightColor="@color/blueDark"
+                    app:switchToggleRightImage="@drawable/male" />
+
+                <TextView
+                    android:id="@+id/txt_rm_triswitch_state2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_triswitch2"
+                    android:layout_alignStart="@+id/rm_triswitch2"
+                    android:layout_below="@+id/rm_triswitch2"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <com.rm.rmswitch.RMTristateSwitch
+                    android:id="@+id/rm_triswitch3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:right_to_left="true"
+                    app:state="right"
+                    app:switchToggleLeftColor="@color/colorPrimary"
+                    app:switchToggleLeftImage="@drawable/cancel"
+                    app:switchToggleMiddleColor="@color/colorPrimary"
+                    app:switchToggleMiddleImage="@drawable/maybe"
+                    app:switchToggleRightColor="@color/colorPrimary"
+                    app:switchToggleRightImage="@drawable/confirm" />
+
+                <TextView
+                    android:id="@+id/txt_rm_triswitch_state3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_triswitch3"
+                    android:layout_alignStart="@+id/rm_triswitch3"
+                    android:layout_below="@+id/rm_triswitch3"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/rm_switch2"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:switchBkgCheckedColor="@color/blue"
-                app:switchBkgNotCheckedColor="@color/pink"
-                app:switchToggleCheckedColor="@color/blueDark"
-                app:switchToggleCheckedImage="@drawable/male"
-                app:switchToggleNotCheckedColor="@color/pinkDark"
-                app:switchToggleNotCheckedImage="@drawable/female" />
+                android:layout_marginTop="12dp">
 
-            <TextView
-                android:id="@+id/txt_rm_switch_state2"
+                <com.rm.rmswitch.RMSwitch
+                    android:id="@+id/rm_switch7"
+                    android:layout_width="56dp"
+                    android:layout_height="40dp"
+                    app:checked="true"
+                    app:forceAspectRatio="false"
+                    app:switchBkgCheckedColor="@color/green"
+                    app:switchBkgNotCheckedColor="@color/red"
+                    app:switchToggleCheckedColor="@color/green"
+                    app:switchToggleCheckedImage="@drawable/happy"
+                    app:switchToggleNotCheckedColor="@color/red"
+                    app:switchToggleNotCheckedImage="@drawable/sad" />
+
+                <TextView
+                    android:id="@+id/txt_rm_switch_state7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_switch7"
+                    android:layout_alignStart="@+id/rm_switch7"
+                    android:layout_below="@+id/rm_switch7"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/rm_switch2"
-                android:layout_alignStart="@+id/rm_switch2"
-                android:layout_below="@+id/rm_switch2"
-                android:layout_marginTop="4dp"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                android:layout_marginTop="12dp">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+                <com.rm.rmswitch.RMSwitch
+                    android:id="@+id/rm_switch2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:switchBkgCheckedColor="@color/blue"
+                    app:switchBkgNotCheckedColor="@color/pink"
+                    app:switchToggleCheckedColor="@color/blueDark"
+                    app:switchToggleCheckedImage="@drawable/male"
+                    app:switchToggleNotCheckedColor="@color/pinkDark"
+                    app:switchToggleNotCheckedImage="@drawable/female" />
 
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/rm_switch3"
+                <TextView
+                    android:id="@+id/txt_rm_switch_state2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_switch2"
+                    android:layout_alignStart="@+id/rm_switch2"
+                    android:layout_below="@+id/rm_switch2"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:checked="true"
-                app:switchToggleCheckedColor="@color/colorPrimary"
-                app:switchToggleCheckedImage="@drawable/confirm"
-                app:switchToggleNotCheckedColor="@color/colorPrimary"
-                app:switchToggleNotCheckedImage="@drawable/cancel" />
+                android:layout_marginTop="12dp">
 
-            <TextView
-                android:id="@+id/txt_rm_switch_state3"
+                <com.rm.rmswitch.RMSwitch
+                    android:id="@+id/rm_switch3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:checked="true"
+                    app:switchToggleCheckedColor="@color/colorPrimary"
+                    app:switchToggleCheckedImage="@drawable/confirm"
+                    app:switchToggleNotCheckedColor="@color/colorPrimary"
+                    app:switchToggleNotCheckedImage="@drawable/cancel" />
+
+                <TextView
+                    android:id="@+id/txt_rm_switch_state3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_switch3"
+                    android:layout_alignStart="@+id/rm_switch3"
+                    android:layout_below="@+id/rm_switch3"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/rm_switch3"
-                android:layout_alignStart="@+id/rm_switch3"
-                android:layout_below="@+id/rm_switch3"
-                android:layout_marginTop="4dp"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                android:layout_marginTop="12dp">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+                <com.rm.rmswitch.RMSwitch
+                    android:id="@+id/rm_switch4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/rm_switch4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txt_rm_switch_state4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_switch4"
+                    android:layout_alignStart="@+id/rm_switch4"
+                    android:layout_below="@+id/rm_switch4"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/txt_rm_switch_state4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/rm_switch4"
-                android:layout_alignStart="@+id/rm_switch4"
-                android:layout_below="@+id/rm_switch4"
-                android:layout_marginTop="4dp"
-                android:textSize="18sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/rm_switch5"
-                android:layout_width="56dp"
-                android:layout_height="wrap_content"
-                app:checked="true"
-                app:switchBkgCheckedColor="@color/green"
-                app:switchBkgNotCheckedColor="@color/red"
-                app:switchToggleCheckedColor="@color/red"
-                app:switchToggleNotCheckedColor="@color/green" />
-
-            <TextView
-                android:id="@+id/txt_rm_switch_state5"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/rm_switch5"
-                android:layout_alignStart="@+id/rm_switch5"
-                android:layout_below="@+id/rm_switch5"
-                android:layout_marginTop="4dp"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                android:layout_marginTop="12dp">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+                <com.rm.rmswitch.RMSwitch
+                    android:id="@+id/rm_switch5"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    app:checked="true"
+                    app:switchBkgCheckedColor="@color/green"
+                    app:switchBkgNotCheckedColor="@color/red"
+                    app:switchToggleCheckedColor="@color/red"
+                    app:switchToggleNotCheckedColor="@color/green" />
 
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/rm_switch6"
-                android:layout_width="72dp"
-                android:layout_height="wrap_content"
-                app:forceAspectRatio="false"
-                app:switchBkgCheckedColor="@color/green"
-                app:switchBkgNotCheckedColor="@color/red"
-                app:switchToggleCheckedColor="@color/red"
-                app:switchToggleNotCheckedColor="@color/green" />
+                <TextView
+                    android:id="@+id/txt_rm_switch_state5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_switch5"
+                    android:layout_alignStart="@+id/rm_switch5"
+                    android:layout_below="@+id/rm_switch5"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/txt_rm_switch_state6"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/rm_switch6"
-                android:layout_alignStart="@+id/rm_switch6"
-                android:layout_below="@+id/rm_switch6"
-                android:layout_marginTop="4dp"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                android:layout_marginTop="12dp">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+                <com.rm.rmswitch.RMSwitch
+                    android:id="@+id/rm_switch6"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    app:forceAspectRatio="false"
+                    app:switchBkgCheckedColor="@color/green"
+                    app:switchBkgNotCheckedColor="@color/red"
+                    app:switchToggleCheckedColor="@color/red"
+                    app:switchToggleNotCheckedColor="@color/green" />
 
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/rm_switch8"
-                android:layout_width="56dp"
-                android:layout_height="40dp"
-                app:switchBkgCheckedColor="@color/black"
-                app:switchBkgNotCheckedColor="@color/black"
-                app:switchToggleCheckedColor="@color/white" />
+                <TextView
+                    android:id="@+id/txt_rm_switch_state6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_switch6"
+                    android:layout_alignStart="@+id/rm_switch6"
+                    android:layout_below="@+id/rm_switch6"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/txt_rm_switch_state8"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/rm_switch8"
-                android:layout_alignStart="@+id/rm_switch8"
-                android:layout_below="@+id/rm_switch8"
-                android:layout_marginTop="4dp"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                android:layout_marginTop="12dp">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+                <com.rm.rmswitch.RMSwitch
+                    android:id="@+id/rm_switch8"
+                    android:layout_width="56dp"
+                    android:layout_height="40dp"
+                    app:switchBkgCheckedColor="@color/black"
+                    app:switchBkgNotCheckedColor="@color/black"
+                    app:switchToggleCheckedColor="@color/white" />
 
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/rm_switch1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txt_rm_switch_state8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_switch8"
+                    android:layout_alignStart="@+id/rm_switch8"
+                    android:layout_below="@+id/rm_switch8"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/txt_rm_switch_state1"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/rm_switch1"
-                android:layout_alignStart="@+id/rm_switch1"
-                android:layout_below="@+id/rm_switch1"
-                android:layout_marginTop="4dp"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                android:layout_marginTop="12dp">
+
+                <com.rm.rmswitch.RMSwitch
+                    android:id="@+id/rm_switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txt_rm_switch_state1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/rm_switch1"
+                    android:layout_alignStart="@+id/rm_switch1"
+                    android:layout_below="@+id/rm_switch1"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

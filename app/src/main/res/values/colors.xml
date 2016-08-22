@@ -8,7 +8,10 @@
     <color name="black">@android:color/black</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="red">#F44336</color>
+    <color name="yellow">#FFEB3B</color>
     <color name="green">#4CAF50</color>
+    <color name="grey">#9E9E9E</color>
+    <color name="greyDark">#616161</color>
     <color name="pink">#FF80AB</color>
     <color name="pinkDark">#EC407A</color>
     <color name="blue">#2196F3</color>
