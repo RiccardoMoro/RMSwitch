@@ -30,8 +30,6 @@ import java.util.List;
 /**
  * Created by Riccardo Moro on 18/08/2016.
  */
-// TODO Update readme: all abount tristate
-// TODO Add slim switch design
 public class RMTristateSwitch extends RelativeLayout implements TristateCheckable, View.OnClickListener {
     private static final String BUNDLE_KEY_STATE = "bundle_key_state";
     private static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
@@ -307,7 +305,7 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
 
         super.onRestoreInstanceState(prevState.getParcelable(BUNDLE_KEY_SUPER_DATA));
 
-        // Restore the check state notifying the observers
+        // Restore the switch state notifying the observers
         mIsEnabled = prevState.getBoolean(BUNDLE_KEY_ENABLED, true);
         mForceAspectRatio = prevState.getBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, true);
 
@@ -833,7 +831,7 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
             toggle();
     }
 
-    // Public interface to watch the check state change
+    // Public interface to watch the switch state changes
     public interface RMTristateSwitchObserver {
         void onCheckStateChange(@State int state);
     }

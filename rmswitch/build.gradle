@@ -8,12 +8,12 @@ ext {
     libraryName = 'rmswitch'
     artifact = 'rmswitch'
 
-    libraryDescription = 'A simple and customizable Switch View'
+    libraryDescription = 'A simple and customizable two or three state Switch View'
 
     siteUrl = 'https://github.com/RiccardoMoro/RMSwitch'
     gitUrl = 'https://github.com/RiccardoMoro/RMSwitch.git'
 
-    libraryVersion = '1.0.1'
+    libraryVersion = '1.1.0'
 
     developerId = 'RiccardoMoro'
     developerName = 'Riccardo Moro'
@@ -32,7 +32,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.1.0"
     }
     buildTypes {
         release {
