@@ -12,7 +12,7 @@ Download
 ------
 ####Gradle:
 ```groovy
-compile 'com.rm:rmswitch:1.0.1'
+compile 'com.rm:rmswitch:1.1.0'
 ```
 
 ## Usage

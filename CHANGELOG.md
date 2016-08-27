@@ -10,7 +10,7 @@ Changelog
 -Fixes
 -Updated README
 
-#### New from V1.1:
+#### New from V1.1.0:
 (27/08/2016)
 -Fixes
 -Added the TristateSwitch, a switch with three possible states (left, middle, right)
