@@ -59,23 +59,27 @@ public class MainActivity extends AppCompatActivity {
         mSwitch.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
             @Override
             public void onCheckStateChange(boolean isChecked) {
-                                Toast.makeText(MainActivity.this, "Switch state: " + 
+                                Toast.makeText(MainActivity.this, 
+                                        "Switch state: " + 
                                         (isChecked ? "checked" : "not checked"), Toast.LENGTH_LONG)
                                         .show();
             }
         });
         
         mTristateSwitch.addSwitchObserver(new RMTristateSwitch.RMTristateSwitchObserver() {
-                                                  @Override
-                                                  public void onCheckStateChange(@RMTristateSwitch.State int state) {
-                                                      mTxtRMTristateSwitchState2
-                                                           .setText(state == RMTristateSwitch.STATE_LEFT ?
-                                                              "Left" :
-                                                              state == RMTristateSwitch.STATE_MIDDLE ?
-                                                                      "Middle" :
-                                                                      "Right");
-                                                  }
-                                              });
+            @Override
+            public void onCheckStateChange(@RMTristateSwitch.State int state) {
+                Toast
+                        .makeText(MainActivity.this,
+                                state == RMTristateSwitch.STATE_LEFT ?
+                                        "Left" :
+                                        state == RMTristateSwitch.STATE_MIDDLE ?
+                                                "Middle" :
+                                                "Right",
+                                Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
 ```
 
