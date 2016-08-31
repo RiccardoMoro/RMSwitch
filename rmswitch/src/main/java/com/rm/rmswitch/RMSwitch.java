@@ -17,7 +17,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -27,29 +26,24 @@ import java.util.List;
 /**
  * Created by Riccardo Moro on 29/07/2016.
  */
-public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickListener {
+public class RMSwitch extends RMAbstractSwitch {
     private static final String BUNDLE_KEY_CHECKED = "bundle_key_checked";
     private static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
     private static final String BUNDLE_KEY_ENABLED = "bundle_key_enabled";
     private static final String BUNDLE_KEY_FORCE_ASPECT_RATIO = "bundle_key_force_aspect_ratio";
     private static final String BUNDLE_KEY_BKG_CHECKED_COLOR = "bundle_key_bkg_checked_color";
-    private static final String BUNDLE_KEY_BKG_NOT_CHECKED_COLOR = "bundle_key_bkg_not_checked_color";
+    private static final String BUNDLE_KEY_BKG_NOT_CHECKED_COLOR =
+            "bundle_key_bkg_not_checked_color";
     private static final String BUNDLE_KEY_TOGGLE_CHECKED_COLOR = "bundle_key_toggle_checked_color";
-    private static final String BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR = "bundle_key_toggle_not_checked_color";
-    private static final String BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES = "bundle_key_toggle_checked_drawable_res";
-    private static final String BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES = "bundle_key_toggle_not_checked_drawable_res";
+    private static final String BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR =
+            "bundle_key_toggle_not_checked_color";
+    private static final String BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES =
+            "bundle_key_toggle_checked_drawable_res";
+    private static final String BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES =
+            "bundle_key_toggle_not_checked_drawable_res";
 
-    private static final int ANIMATION_DURATION = 150;
     private static final float SWITCH_STANDARD_ASPECT_RATIO = 2.2f;
 
-    /**
-     * The Toggle view, the only moving part of the switch
-     */
-    private final SquareImageView mImgToggle;
-    /**
-     * The background image of the switch
-     */
-    private final ImageView mImgBkg;
 
     /**
      * The switch container Layout
@@ -63,16 +57,6 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
      * The current switch state
      */
     private boolean mIsChecked;
-
-    /**
-     * If force aspect ratio or keep the given proportion
-     */
-    private boolean mForceAspectRatio;
-
-    /**
-     * If the view is enabled
-     */
-    private boolean mIsEnabled;
 
     /**
      * The switch background color when is checked
@@ -184,7 +168,8 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
             mToggleCheckedDrawableResource = typedArray.getResourceId(
                     R.styleable.RMSwitch_switchToggleCheckedImage, 0);
             mToggleNotCheckedDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMSwitch_switchToggleNotCheckedImage, mToggleCheckedDrawableResource);
+                    R.styleable.RMSwitch_switchToggleNotCheckedImage,
+                    mToggleCheckedDrawableResource);
 
             // If set the not checked drawable and not the checked one, copy the first
             if (mToggleCheckedDrawableResource == 0 && mToggleNotCheckedDrawableResource != 0)
@@ -215,7 +200,8 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
         bundle.putInt(BUNDLE_KEY_TOGGLE_CHECKED_COLOR, mToggleCheckedColor);
         bundle.putInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR, mToggleNotCheckedColor);
         bundle.putInt(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES, mToggleCheckedDrawableResource);
-        bundle.putInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES, mToggleNotCheckedDrawableResource);
+        bundle.putInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES,
+                mToggleNotCheckedDrawableResource);
 
         return bundle;
     }
@@ -244,67 +230,6 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
 
         setChecked(prevState.getBoolean(BUNDLE_KEY_CHECKED, false));
         notifyObservers();
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-
-        // If set to wrap content, apply standard dimensions
-        if (widthMode != MeasureSpec.EXACTLY) {
-            int standardWith = (int) Utils
-                    .convertDpToPixel(
-                            getContext(),
-                            getResources().getDimension(R.dimen.rm_switch_standard_width));
-
-            // If unspecified or wrap_content where there's more space than the standard,
-            // set the standard dimensions
-            if ((widthMode == MeasureSpec.UNSPECIFIED) ||
-                    (widthMode == MeasureSpec.AT_MOST &&
-                            standardWith < MeasureSpec.getSize(widthMeasureSpec)))
-                widthMeasureSpec = MeasureSpec.makeMeasureSpec(standardWith, MeasureSpec.EXACTLY);
-        }
-
-        if (heightMode != MeasureSpec.EXACTLY) {
-            int standardHeight = (int) Utils
-                    .convertDpToPixel(
-                            getContext(),
-                            getResources().getDimension(R.dimen.rm_switch_standard_height));
-
-            // If unspecified or wrap_content where there's more space than the standard,
-            // set the standard dimensions
-            if ((heightMode == MeasureSpec.UNSPECIFIED) ||
-                    (heightMode == MeasureSpec.AT_MOST &&
-                            standardHeight < MeasureSpec.getSize(heightMeasureSpec)))
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(standardHeight, MeasureSpec.EXACTLY);
-        }
-
-        // Fix the dimension depending on the aspect ratio forced or not
-        if (mForceAspectRatio) {
-
-            // Set the height depending on the width
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    (int) (MeasureSpec.getSize(widthMeasureSpec) / SWITCH_STANDARD_ASPECT_RATIO),
-                    MeasureSpec.getMode(heightMeasureSpec));
-        } else {
-
-            // Check that the width is greater than the height, if not, resize and make a square
-            if (MeasureSpec.getSize(widthMeasureSpec) < MeasureSpec.getSize(heightMeasureSpec))
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                        MeasureSpec.getSize(widthMeasureSpec),
-                        MeasureSpec.getMode(heightMeasureSpec));
-        }
-
-        // Set the margin after all measures have been done
-        int calculatedMargin = MeasureSpec.getSize(heightMeasureSpec) > 0 ?
-                MeasureSpec.getSize(heightMeasureSpec) / 8 :
-                (int) Utils.convertDpToPixel(getContext(), 2);
-        ((RelativeLayout.LayoutParams) mImgToggle.getLayoutParams()).setMargins(
-                calculatedMargin, calculatedMargin, calculatedMargin, calculatedMargin);
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
 
@@ -371,14 +296,6 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
         return mToggleNotCheckedColor;
     }
 
-    public boolean isForceAspectRation() {
-        return mForceAspectRatio;
-    }
-
-    public boolean isEnabled() {
-        return mIsEnabled;
-    }
-
     @DrawableRes
     public int getSwitchToggleCheckedDrawableRes() {
         return mToggleCheckedDrawableResource;
@@ -412,7 +329,8 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
      */
     public void removeSwitchObserver(RMSwitchObserver switchObserver) {
         if (switchObserver != null &&// Valid RMSwitchObserverPassed
-                mObservers != null && mObservers.size() > 0 && // Observers list initialized and not empty
+                mObservers != null && mObservers.size() > 0 && // Observers list initialized and
+                // not empty
                 mObservers.indexOf(switchObserver) >= 0) {// new Observer found in the list
             mObservers.remove(mObservers.indexOf(switchObserver));
         }
@@ -440,7 +358,8 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
     /**
      * Setup all the switch custom attributes appearance
      */
-    private void setupSwitchAppearance() {
+    @Override
+    public void setupSwitchAppearance() {
         // Create the background drawables
         Drawable bkgDrawable =
                 ContextCompat.getDrawable(getContext(), R.drawable.rounded_border_bkg);
@@ -497,7 +416,8 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
                     new TransitionDrawable(new Drawable[]{
                             // If it was a transition drawable, take the last one of it's drawables
                             mImgToggle.getBackground() instanceof TransitionDrawable ?
-                                    ((TransitionDrawable) mImgToggle.getBackground()).getDrawable(1) :
+                                    ((TransitionDrawable) mImgToggle.getBackground()).getDrawable
+                                            (1) :
                                     mImgToggle.getBackground(),
                             toggleBkgDrawable
                     });
@@ -587,6 +507,11 @@ public class RMSwitch extends RelativeLayout implements Checkable, View.OnClickL
     @Override
     public boolean isChecked() {
         return mIsChecked;
+    }
+
+    @Override
+    public float getSwitchAspectRatio() {
+        return SWITCH_STANDARD_ASPECT_RATIO;
     }
 
     @Override

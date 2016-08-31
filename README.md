@@ -3,8 +3,8 @@ RMSwitch
 
 <img src="switch-sample.gif" title="sample" />
 
-A simple View that works like a switch, but with more customizations. 
-With the option to choose between two or three states. (from V1.1)
+A simple View that works like a switch, but with more customizations. <br />
+With the option to choose between two or three states. (from v1.1.0)
 
 [Changelog] (CHANGELOG.md)
 
@@ -12,7 +12,7 @@ Download
 ------
 ####Gradle:
 ```groovy
-compile 'com.rm:rmswitch:1.1.0'
+compile 'com.rm:rmswitch:1.1.1'
 ```
 
 ## Usage
