@@ -338,24 +338,8 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
         notifyObservers();
     }
 
-    // TODO Fix forceAspectRatio
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        if (mForceAspectRatio) {
-
-            // Set the height depending on the width
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    (int) (MeasureSpec.getSize(widthMeasureSpec) / SWITCH_STANDARD_ASPECT_RATIO),
-                    MeasureSpec.getMode(heightMeasureSpec));
-        } else {
-
-            // Check that the width is greater than the height, if not, resize and make a square
-            if (MeasureSpec.getSize(widthMeasureSpec) < MeasureSpec.getSize(heightMeasureSpec))
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                        MeasureSpec.getSize(widthMeasureSpec),
-                        MeasureSpec.getMode(heightMeasureSpec));
-        }
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
@@ -387,6 +371,22 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
                     (heightMode == MeasureSpec.AT_MOST &&
                             standardHeight < MeasureSpec.getSize(heightMeasureSpec)))
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(standardHeight, MeasureSpec.EXACTLY);
+        }
+
+        // Fix the dimension depending on the aspect ratio forced or not
+        if (mForceAspectRatio) {
+
+            // Set the height depending on the width
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    (int) (MeasureSpec.getSize(widthMeasureSpec) / SWITCH_STANDARD_ASPECT_RATIO),
+                    MeasureSpec.getMode(heightMeasureSpec));
+        } else {
+
+            // Check that the width is greater than the height, if not, resize and make a square
+            if (MeasureSpec.getSize(widthMeasureSpec) < MeasureSpec.getSize(heightMeasureSpec))
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                        MeasureSpec.getSize(widthMeasureSpec),
+                        MeasureSpec.getMode(heightMeasureSpec));
         }
 
         // Set the margin after all measures have been done

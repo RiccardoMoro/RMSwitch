@@ -1,18 +1,22 @@
 Changelog
 ------
-#### New from V1.0: 
+#### New from v1.0: 
 (16/08/2016)
 
 -Initial release
 
-#### New from V1.0.1:
+#### New from v1.0.1:
 (17/08/2016)
--Fixes
+-Fixes  <br />
 -Updated README
 
-#### New from V1.1.0:
+#### New from v1.1.0:
 (27/08/2016)
--Fixes
--Added the TristateSwitch, a switch with three possible states (left, middle, right)
--Updated README
--Added CHANGELOG file
+-Fixes  <br />
+-Added the TristateSwitch, a switch with three possible states (left, middle, right)  <br />
+-Updated README  <br />
+-Added CHANGELOG file  <br />
+
+#### New from v1.1.1:
+(WIP)
+-Fix: Now the aspectRation option works correctly
