@@ -1,9 +1,15 @@
 package com.rm.rmswitch;
 
+import android.animation.LayoutTransition;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.annotation.IntDef;
+import android.support.annotation.StyleableRes;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,7 +32,6 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     public static final int STATE_LEFT = 0;
     public static final int STATE_MIDDLE = 1;
     public static final int STATE_RIGHT = 2;
-
 
     /**
      * If force aspect ratio or keep the given proportion
@@ -53,10 +58,57 @@ public abstract class RMAbstractSwitch extends RelativeLayout
      */
     protected RelativeLayout mContainerLayout;
 
+    protected static LayoutTransition sLayoutTransition;
+
     protected static final int ANIMATION_DURATION = 150;
+
+    public RMAbstractSwitch(Context context) {
+        this(context, null);
+    }
+
+    public RMAbstractSwitch(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
 
     public RMAbstractSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        // Create the layout transition if not already created
+        if (sLayoutTransition == null) {
+            sLayoutTransition = new LayoutTransition();
+            sLayoutTransition.setDuration(ANIMATION_DURATION);
+            sLayoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+            sLayoutTransition.setInterpolator(
+                    LayoutTransition.CHANGING,
+                    new DecelerateInterpolator());
+        }
+
+        // Inflate the stock switch view
+        ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.switch_view, this, true);
+
+        // Get the sub-views
+        mImgToggle = (SquareImageView) findViewById(R.id.rm_switch_view_toggle);
+        mImgBkg = (ImageView) findViewById(R.id.rm_switch_view_bkgd);
+        mContainerLayout = (RelativeLayout) findViewById(R.id.rm_switch_view_container);
+
+        // Activate AnimateLayoutChanges in both the container and the root layout
+        setLayoutTransition(sLayoutTransition);
+        mContainerLayout.setLayoutTransition(sLayoutTransition);
+
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+                attrs,
+                getTypedArrayResource(),
+                defStyleAttr, 0);
+
+        try {
+            setupSwitchCustomAttributes(typedArray);
+        } finally {
+            typedArray.recycle();
+        }
+
+        // Set the OnClickListener
+        setOnClickListener(this);
     }
 
     // Setup programmatically the appearance
@@ -147,14 +199,33 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+
+    // Layout rules management
+    protected void removeRules(LayoutParams toggleParams, int[] rules) {
+        for (int rule : rules) {
+            removeRule(toggleParams, rule);
+        }
+    }
+
+    protected void removeRule(LayoutParams toggleParams, int rule) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+
+            // RelativeLayout.LayoutParams.removeRule require api >= 17
+            toggleParams.removeRule(rule);
+
+        } else {
+
+            // If API < 17 manually set the previously active rule with anchor 0 to remove it
+            toggleParams.addRule(rule, 0);
+        }
+    }
+
     @Override
     public void toggle() {
-
     }
 
     @Override
     public void setState(@RMTristateSwitch.State int state) {
-
     }
 
     @Override
@@ -164,7 +235,6 @@ public abstract class RMAbstractSwitch extends RelativeLayout
 
     @Override
     public void setChecked(boolean b) {
-
     }
 
     @Override
@@ -172,7 +242,19 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         return false;
     }
 
+    // OnClick action
+    @Override
+    public void onClick(View view) {
+        if (mIsEnabled)
+            toggle();
+    }
+
     public abstract float getSwitchAspectRatio();
 
+    @StyleableRes
+    public abstract int[] getTypedArrayResource();
+
     public abstract void setupSwitchAppearance();
+
+    public abstract void setupSwitchCustomAttributes(TypedArray a);
 }

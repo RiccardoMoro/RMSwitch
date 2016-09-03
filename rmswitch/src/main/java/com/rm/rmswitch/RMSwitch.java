@@ -1,24 +1,17 @@
 package com.rm.rmswitch;
 
-import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +37,6 @@ public class RMSwitch extends RMAbstractSwitch {
 
     private static final float SWITCH_STANDARD_ASPECT_RATIO = 2.2f;
 
-
-    /**
-     * The switch container Layout
-     */
-    private final RelativeLayout mContainerLayout;
 
     // View variables
     private List<RMSwitchObserver> mObservers;
@@ -89,8 +77,6 @@ public class RMSwitch extends RMAbstractSwitch {
     private int mToggleNotCheckedDrawableResource;
 
 
-    private static LayoutTransition sLayoutTransition;
-
     public RMSwitch(Context context) {
         this(context, null);
     }
@@ -101,90 +87,6 @@ public class RMSwitch extends RMAbstractSwitch {
 
     public RMSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        // Create the layout transition if not already created
-        if (sLayoutTransition == null) {
-            sLayoutTransition = new LayoutTransition();
-            sLayoutTransition.setDuration(ANIMATION_DURATION);
-            sLayoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-            sLayoutTransition.setInterpolator(
-                    LayoutTransition.CHANGING,
-                    new DecelerateInterpolator());
-        }
-
-        // Inflate the stock switch view
-        ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.switch_view, this, true);
-
-        // Get the sub-views
-        mImgToggle = (SquareImageView) findViewById(R.id.rm_switch_view_toggle);
-        mImgBkg = (ImageView) findViewById(R.id.rm_switch_view_bkgd);
-        mContainerLayout = (RelativeLayout) findViewById(R.id.rm_switch_view_container);
-
-        // Activate AnimateLayoutChanges in both the container and the root layout
-        setLayoutTransition(sLayoutTransition);
-        mContainerLayout.setLayoutTransition(sLayoutTransition);
-
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.RMSwitch,
-                defStyleAttr, 0);
-
-        try {
-            // Get the checked flag
-            mIsChecked = typedArray.getBoolean(
-                    R.styleable.RMSwitch_checked, false);
-
-            // Keep aspect ratio flag
-            mForceAspectRatio = typedArray.getBoolean(
-                    R.styleable.RMSwitch_forceAspectRatio, true);
-
-            // If the switch is enabled
-            mIsEnabled = typedArray.getBoolean(
-                    R.styleable.RMSwitch_enabled, true);
-
-
-            //Get the background checked and not checked color
-            mBkgCheckedColor = typedArray.getColor(
-                    R.styleable.RMSwitch_switchBkgCheckedColor,
-                    Utils.getDefaultBackgroundColor(context));
-
-            mBkgNotCheckedColor = typedArray.getColor(
-                    R.styleable.RMSwitch_switchBkgNotCheckedColor,
-                    mBkgCheckedColor);
-
-
-            //Get the toggle checked and not checked colors
-            mToggleCheckedColor = typedArray.getColor(
-                    R.styleable.RMSwitch_switchToggleCheckedColor,
-                    Utils.getAccentColor(context));
-
-            mToggleNotCheckedColor = typedArray.getColor(
-                    R.styleable.RMSwitch_switchToggleNotCheckedColor,
-                    Color.WHITE);
-
-
-            // Get the toggle checked and not checked images
-            mToggleCheckedDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMSwitch_switchToggleCheckedImage, 0);
-            mToggleNotCheckedDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMSwitch_switchToggleNotCheckedImage,
-                    mToggleCheckedDrawableResource);
-
-            // If set the not checked drawable and not the checked one, copy the first
-            if (mToggleCheckedDrawableResource == 0 && mToggleNotCheckedDrawableResource != 0)
-                mToggleCheckedDrawableResource = mToggleNotCheckedDrawableResource;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            typedArray.recycle();
-        }
-        // Set the OnClickListener
-        setOnClickListener(this);
-
-        // Set manually checked flag, update the appearance and change the toggle gravity
-        setChecked(mIsChecked);
     }
 
     @Override
@@ -452,6 +354,56 @@ public class RMSwitch extends RMAbstractSwitch {
         setAlpha(mIsEnabled ? 1f : 0.6f);
     }
 
+    @Override
+    public void setupSwitchCustomAttributes(TypedArray typedArray) {
+        // Get the checked flag
+        mIsChecked = typedArray.getBoolean(
+                R.styleable.RMSwitch_checked, false);
+
+        // Keep aspect ratio flag
+        mForceAspectRatio = typedArray.getBoolean(
+                R.styleable.RMSwitch_forceAspectRatio, true);
+
+        // If the switch is enabled
+        mIsEnabled = typedArray.getBoolean(
+                R.styleable.RMSwitch_enabled, true);
+
+
+        //Get the background checked and not checked color
+        mBkgCheckedColor = typedArray.getColor(
+                R.styleable.RMSwitch_switchBkgCheckedColor,
+                Utils.getDefaultBackgroundColor(getContext()));
+
+        mBkgNotCheckedColor = typedArray.getColor(
+                R.styleable.RMSwitch_switchBkgNotCheckedColor,
+                mBkgCheckedColor);
+
+
+        //Get the toggle checked and not checked colors
+        mToggleCheckedColor = typedArray.getColor(
+                R.styleable.RMSwitch_switchToggleCheckedColor,
+                Utils.getAccentColor(getContext()));
+
+        mToggleNotCheckedColor = typedArray.getColor(
+                R.styleable.RMSwitch_switchToggleNotCheckedColor,
+                Color.WHITE);
+
+
+        // Get the toggle checked and not checked images
+        mToggleCheckedDrawableResource = typedArray.getResourceId(
+                R.styleable.RMSwitch_switchToggleCheckedImage, 0);
+        mToggleNotCheckedDrawableResource = typedArray.getResourceId(
+                R.styleable.RMSwitch_switchToggleNotCheckedImage,
+                mToggleCheckedDrawableResource);
+
+        // If set the not checked drawable and not the checked one, copy the first
+        if (mToggleCheckedDrawableResource == 0 && mToggleNotCheckedDrawableResource != 0)
+            mToggleCheckedDrawableResource = mToggleNotCheckedDrawableResource;
+
+        // Set manually checked flag, update the appearance and change the toggle gravity
+        setChecked(mIsChecked);
+    }
+
     /**
      * Move the toggle from one side to the other of this view,
      * called AFTER setting the {@link #mIsChecked} variable
@@ -466,16 +418,7 @@ public class RMSwitch extends RMAbstractSwitch {
                 getCurrentLayoutRule());
 
         // Remove the previous alignment rule
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-
-            // RelativeLayout.LayoutParams.removeRule require api >= 17
-            toggleParams.removeRule(
-                    getPreviousLayoutRule());
-        } else {
-
-            // If API < 17 manually set the previously active rule with anchor 0 to remove it
-            toggleParams.addRule(getPreviousLayoutRule(), 0);
-        }
+        removeRule(toggleParams, getPreviousLayoutRule());
 
         mImgToggle.setLayoutParams(toggleParams);
     }
@@ -520,15 +463,13 @@ public class RMSwitch extends RMAbstractSwitch {
         notifyObservers();
     }
 
-    // OnClick action
-    @Override
-    public void onClick(View v) {
-        if (isEnabled())
-            toggle();
-    }
-
     // Public interface to watch the check state change
     public interface RMSwitchObserver {
         void onCheckStateChange(boolean isChecked);
+    }
+
+    @Override
+    public int[] getTypedArrayResource() {
+        return R.styleable.RMSwitch;
     }
 }

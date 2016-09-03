@@ -1,13 +1,11 @@
 package com.rm.rmswitch;
 
-import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
@@ -15,11 +13,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,8 +101,6 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     private int mToggleRightDrawableResource;
 
 
-    private static LayoutTransition sLayoutTransition;
-
     public RMTristateSwitch(Context context) {
         this(context, null);
     }
@@ -120,110 +111,16 @@ public class RMTristateSwitch extends RMAbstractSwitch {
 
     public RMTristateSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        // Create the layout transition if not already created
-        if (sLayoutTransition == null) {
-            sLayoutTransition = new LayoutTransition();
-            sLayoutTransition.setDuration(ANIMATION_DURATION);
-            sLayoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-            sLayoutTransition.setInterpolator(
-                    LayoutTransition.CHANGING,
-                    new DecelerateInterpolator());
-        }
-
-        // Inflate the stock switch view
-        ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.switch_view, this, true);
-
-        // Get the sub-views
-        mImgToggle = (SquareImageView) findViewById(R.id.rm_switch_view_toggle);
-        mImgBkg = (ImageView) findViewById(R.id.rm_switch_view_bkgd);
-        mContainerLayout = (RelativeLayout) findViewById(R.id.rm_switch_view_container);
-
-        // Activate AnimateLayoutChanges in both the container and the root layout
-        setLayoutTransition(sLayoutTransition);
-        mContainerLayout.setLayoutTransition(sLayoutTransition);
-
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.RMTristateSwitch,
-                defStyleAttr, 0);
-
-        try {
-            // Get the state
-            //noinspection WrongConstant
-            mCurrentState = typedArray.getInt(
-                    R.styleable.RMTristateSwitch_state, STATE_LEFT);
-
-            // Keep aspect ratio flag
-            mForceAspectRatio = typedArray.getBoolean(
-                    R.styleable.RMTristateSwitch_forceAspectRatio, true);
-
-            // If the switch is enabled
-            mIsEnabled = typedArray.getBoolean(
-                    R.styleable.RMTristateSwitch_enabled, true);
-
-            // The direction of the selection
-            mRightToLeft = typedArray.getBoolean(
-                    R.styleable.RMTristateSwitch_right_to_left, false);
-
-
-            //Get the background color of the switch if left, middle or right
-            mBkgLeftColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchBkgLeftColor,
-                    Utils.getDefaultBackgroundColor(context));
-
-            mBkgMiddleColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchBkgMiddleColor,
-                    mBkgLeftColor);
-
-            mBkgRightColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchBkgRightColor,
-                    mBkgLeftColor);
-
-
-            //Get the toggle color of the switch if left, middle or right
-            mToggleLeftColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchToggleLeftColor,
-                    Color.WHITE);
-
-            mToggleMiddleColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchToggleMiddleColor,
-                    Utils.getPrimaryColor(getContext()));
-
-            mToggleRightColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchToggleRightColor,
-                    Utils.getAccentColor(getContext()));
-
-
-            // Get the toggle images when left, middle or right
-            mToggleLeftDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMTristateSwitch_switchToggleLeftImage, 0);
-            mToggleMiddleDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMTristateSwitch_switchToggleMiddleImage,
-                    mToggleLeftDrawableResource);
-            mToggleRightDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMTristateSwitch_switchToggleRightImage,
-                    mToggleLeftDrawableResource);
-
-            // If at least one image is set, add all the missing ones
-            setMissingImages();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            typedArray.recycle();
-        }
-        // Set the OnClickListener
-        setOnClickListener(this);
-
-        // Update the appearance and change the toggle gravity
-        setState(mCurrentState);
     }
 
     @Override
     public float getSwitchAspectRatio() {
         return SWITCH_STANDARD_ASPECT_RATIO;
+    }
+
+    @Override
+    public int[] getTypedArrayResource() {
+        return R.styleable.RMTristateSwitch;
     }
 
     private void setMissingImages() {
@@ -603,6 +500,71 @@ public class RMTristateSwitch extends RMAbstractSwitch {
         setAlpha(mIsEnabled ? 1f : 0.6f);
     }
 
+    @Override
+    public void setupSwitchCustomAttributes(TypedArray typedArray) {
+        // Get the state
+        //noinspection WrongConstant
+        mCurrentState = typedArray.getInt(
+                R.styleable.RMTristateSwitch_state, STATE_LEFT);
+
+        // Keep aspect ratio flag
+        mForceAspectRatio = typedArray.getBoolean(
+                R.styleable.RMTristateSwitch_forceAspectRatio, true);
+
+        // If the switch is enabled
+        mIsEnabled = typedArray.getBoolean(
+                R.styleable.RMTristateSwitch_enabled, true);
+
+        // The direction of the selection
+        mRightToLeft = typedArray.getBoolean(
+                R.styleable.RMTristateSwitch_right_to_left, false);
+
+
+        //Get the background color of the switch if left, middle or right
+        mBkgLeftColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchBkgLeftColor,
+                Utils.getDefaultBackgroundColor(getContext()));
+
+        mBkgMiddleColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchBkgMiddleColor,
+                mBkgLeftColor);
+
+        mBkgRightColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchBkgRightColor,
+                mBkgLeftColor);
+
+
+        //Get the toggle color of the switch if left, middle or right
+        mToggleLeftColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchToggleLeftColor,
+                Color.WHITE);
+
+        mToggleMiddleColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchToggleMiddleColor,
+                Utils.getPrimaryColor(getContext()));
+
+        mToggleRightColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchToggleRightColor,
+                Utils.getAccentColor(getContext()));
+
+
+        // Get the toggle images when left, middle or right
+        mToggleLeftDrawableResource = typedArray.getResourceId(
+                R.styleable.RMTristateSwitch_switchToggleLeftImage, 0);
+        mToggleMiddleDrawableResource = typedArray.getResourceId(
+                R.styleable.RMTristateSwitch_switchToggleMiddleImage,
+                mToggleLeftDrawableResource);
+        mToggleRightDrawableResource = typedArray.getResourceId(
+                R.styleable.RMTristateSwitch_switchToggleRightImage,
+                mToggleLeftDrawableResource);
+
+        // If at least one image is set, add all the missing ones
+        setMissingImages();
+
+        // Update the appearance and change the toggle gravity
+        setState(mCurrentState);
+    }
+
 
     /**
      * Move the toggle from one state to the next, using the Gravity param
@@ -642,25 +604,6 @@ public class RMTristateSwitch extends RMAbstractSwitch {
 
         if (mCurrentState == STATE_RIGHT)
             removeRules(toggleParams, new int[]{ALIGN_PARENT_LEFT, CENTER_HORIZONTAL});
-    }
-
-    private void removeRules(LayoutParams toggleParams, int[] rules) {
-        for (int rule : rules) {
-            removeRule(toggleParams, rule);
-        }
-    }
-
-    private void removeRule(LayoutParams toggleParams, int rule) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-
-            // RelativeLayout.LayoutParams.removeRule require api >= 17
-            toggleParams.removeRule(rule);
-
-        } else {
-
-            // If API < 17 manually set the previously active rule with anchor 0 to remove it
-            toggleParams.addRule(rule, 0);
-        }
     }
 
     // Checkable interface methods
@@ -717,13 +660,6 @@ public class RMTristateSwitch extends RMAbstractSwitch {
                 return STATE_RIGHT;
         }
         return STATE_LEFT;
-    }
-
-    // OnClick action
-    @Override
-    public void onClick(View v) {
-        if (isEnabled())
-            toggle();
     }
 
     // Public interface to watch the switch state changes
