@@ -251,13 +251,5 @@ public class ActivityMain extends AppCompatActivity {
                                 "Right");
             }
         });
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mRMTristateSwitch5 != null)
-                    mRMTristateSwitch5.setSlimDesign(true);
-            }
-        }, 3000);
     }
 }
