@@ -136,15 +136,6 @@ public class RMSwitch extends RMAbstractSwitch {
 
 
     // Setup programmatically the appearance
-    public void setEnabled(boolean enabled) {
-        mIsEnabled = enabled;
-        setupSwitchAppearance();
-    }
-
-    public void setForceAspectRatio(boolean forceAspectRatio) {
-        mForceAspectRatio = forceAspectRatio;
-        setupSwitchAppearance();
-    }
 
     public void setSwitchBkgCheckedColor(@ColorInt int color) {
         mBkgCheckedColor = color;
@@ -408,7 +399,8 @@ public class RMSwitch extends RMAbstractSwitch {
      * Move the toggle from one side to the other of this view,
      * called AFTER setting the {@link #mIsChecked} variable
      */
-    private void changeToggleGravity() {
+    @Override
+    protected void changeToggleGravity() {
 
         LayoutParams toggleParams =
                 ((LayoutParams) mImgToggle.getLayoutParams());
@@ -455,6 +447,16 @@ public class RMSwitch extends RMAbstractSwitch {
     @Override
     public float getSwitchAspectRatio() {
         return SWITCH_STANDARD_ASPECT_RATIO;
+    }
+
+    @Override
+    public int getSwitchStandardWidth() {
+        return R.dimen.rm_switch_standard_width;
+    }
+
+    @Override
+    public int getSwitchStandardHeight() {
+        return R.dimen.rm_switch_standard_height;
     }
 
     @Override

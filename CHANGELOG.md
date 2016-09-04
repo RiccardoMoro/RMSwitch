@@ -20,3 +20,6 @@ Changelog
 #### New from v1.1.1:
 (WIP)
 -Fix: Now the aspectRation option works correctly
+-Code improvements
+-Fix: tristate switch default dimensions
+-Added the "slim design" option to make the switch looks similar to the default android one

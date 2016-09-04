@@ -119,6 +119,16 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     }
 
     @Override
+    public int getSwitchStandardWidth() {
+        return R.dimen.rm_triswitch_standard_width;
+    }
+
+    @Override
+    public int getSwitchStandardHeight() {
+        return R.dimen.rm_triswitch_standard_height;
+    }
+
+    @Override
     public int[] getTypedArrayResource() {
         return R.styleable.RMTristateSwitch;
     }
@@ -570,7 +580,8 @@ public class RMTristateSwitch extends RMAbstractSwitch {
      * Move the toggle from one state to the next, using the Gravity param
      * called AFTER setting the {@link #mCurrentState} variable
      */
-    private void changeToggleGravity() {
+    @Override
+    protected void changeToggleGravity() {
 
         LayoutParams toggleParams =
                 ((LayoutParams) mImgToggle.getLayoutParams());

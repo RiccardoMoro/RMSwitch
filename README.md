@@ -97,6 +97,7 @@ RMSwitch
 | switchToggleNotCheckedColor   | setSwitchToggleNotCheckedColor(@ColorInt int color)             	| The color of the Switch toggle if not checked                                                                   	| white                                              	            |
 | switchToggleCheckedImage      | setSwitchToggleCheckedDrawableRes(@DrawableRes int drawable)    	| The image to be shown on the toggle if checked                                                                  	| the same as switchToggleNotCheckedImage if set, none otherwise    |
 | switchToggleNotCheckedImage   | setSwitchToggleNotCheckedDrawableRes(@DrawableRes int drawable) 	| The image to be shown on the toggle if not checked                                                              	| the same as switchToggleCheckedImage if set, none otherwise       |
+| slimDesign                    | setSlimDesign(boolean slimDesign) 	                            | The switch design, if default or slim (the latter is similar to the default android switch                        | false                                                             |
 
 RMTristateSwitch
 ------
@@ -115,6 +116,7 @@ RMTristateSwitch
 | switchToggleLeftImage    	    | setSwitchToggleLeftDrawableRes(@ColorInt int color)               | The toggle image of the Switch if in the left state                                                               | the same as the one of the other states toggle image if at least one set, none otherwise 	    |
 | switchToggleMiddleImage    	| setSwitchToggleMiddleDrawableRes(@ColorInt int color)             | The toggle image of the Switch if in the middle state                                                             | the same as the one of the other states toggle image if at least one set, none otherwise 	    |
 | switchToggleRightImage    	| setSwitchToggleRightDrawableRes(@ColorInt int color)              | The toggle image of the Switch if in the right state                                                              | the same as the one of the other states toggle image if at least one set, none otherwise 	    |
+| slimDesign                    | setSlimDesign(boolean slimDesign) 	                            | The switch design, if default or slim (the latter is similar to the default android switch                        | false                                                             |
 
 The changes between the Switch states will be automatically cross-faded, to obtain a smooth experience
 
