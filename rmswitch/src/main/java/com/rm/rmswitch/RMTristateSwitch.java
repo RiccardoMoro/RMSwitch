@@ -1,36 +1,26 @@
 package com.rm.rmswitch;
 
-import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Riccardo Moro on 18/08/2016.
  */
-public class RMTristateSwitch extends RelativeLayout implements TristateCheckable, View.OnClickListener {
+public class RMTristateSwitch extends RMAbstractSwitch {
     private static final String BUNDLE_KEY_STATE = "bundle_key_state";
     private static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
     private static final String BUNDLE_KEY_ENABLED = "bundle_key_enabled";
@@ -42,36 +32,14 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
     private static final String BUNDLE_KEY_TOGGLE_LEFT_COLOR = "bundle_key_toggle_left_color";
     private static final String BUNDLE_KEY_TOGGLE_MIDDLE_COLOR = "bundle_key_toggle_middle_color";
     private static final String BUNDLE_KEY_TOGGLE_RIGHT_COLOR = "bundle_key_toggle_right_color";
-    private static final String BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE_RES = "bundle_key_toggle_left_drawable_res";
-    private static final String BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE_RES = "bundle_key_toggle_middle_drawable_res";
-    private static final String BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE_RES = "bundle_key_toggle_right_drawable_res";
+    private static final String BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE_RES =
+            "bundle_key_toggle_left_drawable_res";
+    private static final String BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE_RES =
+            "bundle_key_toggle_middle_drawable_res";
+    private static final String BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE_RES =
+            "bundle_key_toggle_right_drawable_res";
 
-    private static final int ANIMATION_DURATION = 150;
     private static final float SWITCH_STANDARD_ASPECT_RATIO = 2.6f;
-
-    // The possible toggle states
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({STATE_LEFT, STATE_MIDDLE, STATE_RIGHT})
-    public @interface State {
-    }
-
-    public static final int STATE_LEFT = 0;
-    public static final int STATE_MIDDLE = 1;
-    public static final int STATE_RIGHT = 2;
-
-    /**
-     * The Toggle view, the only moving part of the switch
-     */
-    private final SquareImageView mImgToggle;
-    /**
-     * The background image of the switch
-     */
-    private final ImageView mImgBkg;
-
-    /**
-     * The switch container Layout
-     */
-    private final RelativeLayout mContainerLayout;
 
     // View variables
     private List<RMTristateSwitchObserver> mObservers;
@@ -81,17 +49,6 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
      */
     @State
     private int mCurrentState;
-
-
-    /**
-     * If force aspect ratio or keep the given proportion
-     */
-    private boolean mForceAspectRatio;
-
-    /**
-     * If the view is enabled
-     */
-    private boolean mIsEnabled;
 
     /**
      * The direction of the selection on click
@@ -144,8 +101,6 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
     private int mToggleRightDrawableResource;
 
 
-    private static LayoutTransition sLayoutTransition;
-
     public RMTristateSwitch(Context context) {
         this(context, null);
     }
@@ -156,103 +111,26 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
 
     public RMTristateSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
 
-        // Create the layout transition if not already created
-        if (sLayoutTransition == null) {
-            sLayoutTransition = new LayoutTransition();
-            sLayoutTransition.setDuration(ANIMATION_DURATION);
-            sLayoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-            sLayoutTransition.setInterpolator(
-                    LayoutTransition.CHANGING,
-                    new DecelerateInterpolator());
-        }
+    @Override
+    public float getSwitchAspectRatio() {
+        return SWITCH_STANDARD_ASPECT_RATIO;
+    }
 
-        // Inflate the stock switch view
-        ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.switch_view, this, true);
+    @Override
+    public int getSwitchStandardWidth() {
+        return R.dimen.rm_triswitch_standard_width;
+    }
 
-        // Get the sub-views
-        mImgToggle = (SquareImageView) findViewById(R.id.rm_switch_view_toggle);
-        mImgBkg = (ImageView) findViewById(R.id.rm_switch_view_bkgd);
-        mContainerLayout = (RelativeLayout) findViewById(R.id.rm_switch_view_container);
+    @Override
+    public int getSwitchStandardHeight() {
+        return R.dimen.rm_triswitch_standard_height;
+    }
 
-        // Activate AnimateLayoutChanges in both the container and the root layout
-        setLayoutTransition(sLayoutTransition);
-        mContainerLayout.setLayoutTransition(sLayoutTransition);
-
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.RMTristateSwitch,
-                defStyleAttr, 0);
-
-        try {
-            // Get the state
-            //noinspection WrongConstant
-            mCurrentState = typedArray.getInt(
-                    R.styleable.RMTristateSwitch_state, STATE_LEFT);
-
-            // Keep aspect ratio flag
-            mForceAspectRatio = typedArray.getBoolean(
-                    R.styleable.RMTristateSwitch_forceAspectRatio, true);
-
-            // If the switch is enabled
-            mIsEnabled = typedArray.getBoolean(
-                    R.styleable.RMTristateSwitch_enabled, true);
-
-            // The direction of the selection
-            mRightToLeft = typedArray.getBoolean(
-                    R.styleable.RMTristateSwitch_right_to_left, false);
-
-
-            //Get the background color of the switch if left, middle or right
-            mBkgLeftColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchBkgLeftColor,
-                    Utils.getDefaultBackgroundColor(context));
-
-            mBkgMiddleColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchBkgMiddleColor,
-                    mBkgLeftColor);
-
-            mBkgRightColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchBkgRightColor,
-                    mBkgLeftColor);
-
-
-            //Get the toggle color of the switch if left, middle or right
-            mToggleLeftColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchToggleLeftColor,
-                    Color.WHITE);
-
-            mToggleMiddleColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchToggleMiddleColor,
-                    Utils.getPrimaryColor(getContext()));
-
-            mToggleRightColor = typedArray.getColor(
-                    R.styleable.RMTristateSwitch_switchToggleRightColor,
-                    Utils.getAccentColor(getContext()));
-
-
-            // Get the toggle images when left, middle or right
-            mToggleLeftDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMTristateSwitch_switchToggleLeftImage, 0);
-            mToggleMiddleDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMTristateSwitch_switchToggleMiddleImage, mToggleLeftDrawableResource);
-            mToggleRightDrawableResource = typedArray.getResourceId(
-                    R.styleable.RMTristateSwitch_switchToggleRightImage, mToggleLeftDrawableResource);
-
-            // If at least one image is set, add all the missing ones
-            setMissingImages();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            typedArray.recycle();
-        }
-        // Set the OnClickListener
-        setOnClickListener(this);
-
-        // Update the appearance and change the toggle gravity
-        setState(mCurrentState);
+    @Override
+    public int[] getTypedArrayResource() {
+        return R.styleable.RMTristateSwitch;
     }
 
     private void setMissingImages() {
@@ -338,79 +216,8 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
         notifyObservers();
     }
 
-    // TODO Fix forceAspectRatio
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        if (mForceAspectRatio) {
-
-            // Set the height depending on the width
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    (int) (MeasureSpec.getSize(widthMeasureSpec) / SWITCH_STANDARD_ASPECT_RATIO),
-                    MeasureSpec.getMode(heightMeasureSpec));
-        } else {
-
-            // Check that the width is greater than the height, if not, resize and make a square
-            if (MeasureSpec.getSize(widthMeasureSpec) < MeasureSpec.getSize(heightMeasureSpec))
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                        MeasureSpec.getSize(widthMeasureSpec),
-                        MeasureSpec.getMode(heightMeasureSpec));
-        }
-
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-
-        // If set to wrap content, apply standard dimensions
-        if (widthMode != MeasureSpec.EXACTLY) {
-            int standardWith = (int) Utils
-                    .convertDpToPixel(
-                            getContext(),
-                            getResources().getDimension(R.dimen.rm_switch_standard_width));
-
-            // If unspecified or wrap_content where there's more space than the standard,
-            // set the standard dimensions
-            if ((widthMode == MeasureSpec.UNSPECIFIED) ||
-                    (widthMode == MeasureSpec.AT_MOST &&
-                            standardWith < MeasureSpec.getSize(widthMeasureSpec)))
-                widthMeasureSpec = MeasureSpec.makeMeasureSpec(standardWith, MeasureSpec.EXACTLY);
-        }
-
-        if (heightMode != MeasureSpec.EXACTLY) {
-            int standardHeight = (int) Utils
-                    .convertDpToPixel(
-                            getContext(),
-                            getResources().getDimension(R.dimen.rm_switch_standard_height));
-
-            // If unspecified or wrap_content where there's more space than the standard,
-            // set the standard dimensions
-            if ((heightMode == MeasureSpec.UNSPECIFIED) ||
-                    (heightMode == MeasureSpec.AT_MOST &&
-                            standardHeight < MeasureSpec.getSize(heightMeasureSpec)))
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(standardHeight, MeasureSpec.EXACTLY);
-        }
-
-        // Set the margin after all measures have been done
-        int calculatedMargin = MeasureSpec.getSize(heightMeasureSpec) > 0 ?
-                MeasureSpec.getSize(heightMeasureSpec) / 8 :
-                (int) Utils.convertDpToPixel(getContext(), 2);
-        ((RelativeLayout.LayoutParams) mImgToggle.getLayoutParams()).setMargins(
-                calculatedMargin, calculatedMargin, calculatedMargin, calculatedMargin);
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
 
     // Setup programmatically the appearance
-    public void setEnabled(boolean enabled) {
-        mIsEnabled = enabled;
-        setupSwitchAppearance();
-    }
-
-    public void setForceAspectRatio(boolean forceAspectRatio) {
-        mForceAspectRatio = forceAspectRatio;
-        setupSwitchAppearance();
-    }
-
     public void setRightToLeft(boolean rightToLeft) {
         mRightToLeft = rightToLeft;
     }
@@ -465,14 +272,6 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
 
 
     // Get the switch setup
-    public boolean isForceAspectRation() {
-        return mForceAspectRatio;
-    }
-
-    public boolean isEnabled() {
-        return mIsEnabled;
-    }
-
     public boolean isRightToLeft() {
         return mRightToLeft;
     }
@@ -604,7 +403,8 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
      */
     public void removeSwitchObserver(RMTristateSwitchObserver switchObserver) {
         if (switchObserver != null &&// Valid RMSwitchObserverPassed
-                mObservers != null && mObservers.size() > 0 && // Observers list initialized and not empty
+                mObservers != null && mObservers.size() > 0 && // Observers list initialized and
+                // not empty
                 mObservers.indexOf(switchObserver) >= 0) {// new Observer found in the list
             mObservers.remove(mObservers.indexOf(switchObserver));
         }
@@ -632,7 +432,8 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
     /**
      * Setup all the switch custom attributes appearance
      */
-    private void setupSwitchAppearance() {
+    @Override
+    public void setupSwitchAppearance() {
         // Create the background drawables
         Drawable bkgDrawable =
                 ContextCompat.getDrawable(getContext(), R.drawable.rounded_border_bkg);
@@ -673,7 +474,8 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
                     new TransitionDrawable(new Drawable[]{
                             // If it was a transition drawable, take the last one of it's drawables
                             mImgToggle.getBackground() instanceof TransitionDrawable ?
-                                    ((TransitionDrawable) mImgToggle.getBackground()).getDrawable(1) :
+                                    ((TransitionDrawable) mImgToggle.getBackground()).getDrawable
+                                            (1) :
                                     mImgToggle.getBackground(),
                             toggleBkgDrawable
                     });
@@ -708,12 +510,78 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
         setAlpha(mIsEnabled ? 1f : 0.6f);
     }
 
+    @Override
+    public void setupSwitchCustomAttributes(TypedArray typedArray) {
+        // Get the state
+        //noinspection WrongConstant
+        mCurrentState = typedArray.getInt(
+                R.styleable.RMTristateSwitch_state, STATE_LEFT);
+
+        // Keep aspect ratio flag
+        mForceAspectRatio = typedArray.getBoolean(
+                R.styleable.RMTristateSwitch_forceAspectRatio, true);
+
+        // If the switch is enabled
+        mIsEnabled = typedArray.getBoolean(
+                R.styleable.RMTristateSwitch_enabled, true);
+
+        // The direction of the selection
+        mRightToLeft = typedArray.getBoolean(
+                R.styleable.RMTristateSwitch_right_to_left, false);
+
+
+        //Get the background color of the switch if left, middle or right
+        mBkgLeftColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchBkgLeftColor,
+                Utils.getDefaultBackgroundColor(getContext()));
+
+        mBkgMiddleColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchBkgMiddleColor,
+                mBkgLeftColor);
+
+        mBkgRightColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchBkgRightColor,
+                mBkgLeftColor);
+
+
+        //Get the toggle color of the switch if left, middle or right
+        mToggleLeftColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchToggleLeftColor,
+                Color.WHITE);
+
+        mToggleMiddleColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchToggleMiddleColor,
+                Utils.getPrimaryColor(getContext()));
+
+        mToggleRightColor = typedArray.getColor(
+                R.styleable.RMTristateSwitch_switchToggleRightColor,
+                Utils.getAccentColor(getContext()));
+
+
+        // Get the toggle images when left, middle or right
+        mToggleLeftDrawableResource = typedArray.getResourceId(
+                R.styleable.RMTristateSwitch_switchToggleLeftImage, 0);
+        mToggleMiddleDrawableResource = typedArray.getResourceId(
+                R.styleable.RMTristateSwitch_switchToggleMiddleImage,
+                mToggleLeftDrawableResource);
+        mToggleRightDrawableResource = typedArray.getResourceId(
+                R.styleable.RMTristateSwitch_switchToggleRightImage,
+                mToggleLeftDrawableResource);
+
+        // If at least one image is set, add all the missing ones
+        setMissingImages();
+
+        // Update the appearance and change the toggle gravity
+        setState(mCurrentState);
+    }
+
 
     /**
      * Move the toggle from one state to the next, using the Gravity param
      * called AFTER setting the {@link #mCurrentState} variable
      */
-    private void changeToggleGravity() {
+    @Override
+    protected void changeToggleGravity() {
 
         LayoutParams toggleParams =
                 ((LayoutParams) mImgToggle.getLayoutParams());
@@ -747,25 +615,6 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
 
         if (mCurrentState == STATE_RIGHT)
             removeRules(toggleParams, new int[]{ALIGN_PARENT_LEFT, CENTER_HORIZONTAL});
-    }
-
-    private void removeRules(LayoutParams toggleParams, int[] rules) {
-        for (int rule : rules) {
-            removeRule(toggleParams, rule);
-        }
-    }
-
-    private void removeRule(LayoutParams toggleParams, int rule) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-
-            // RelativeLayout.LayoutParams.removeRule require api >= 17
-            toggleParams.removeRule(rule);
-
-        } else {
-
-            // If API < 17 manually set the previously active rule with anchor 0 to remove it
-            toggleParams.addRule(rule, 0);
-        }
     }
 
     // Checkable interface methods
@@ -822,13 +671,6 @@ public class RMTristateSwitch extends RelativeLayout implements TristateCheckabl
                 return STATE_RIGHT;
         }
         return STATE_LEFT;
-    }
-
-    // OnClick action
-    @Override
-    public void onClick(View v) {
-        if (isEnabled())
-            toggle();
     }
 
     // Public interface to watch the switch state changes

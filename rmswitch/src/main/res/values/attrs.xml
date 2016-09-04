@@ -2,11 +2,13 @@
 <resources>
     <attr name="enabled" format="boolean" />
     <attr name="forceAspectRatio" format="boolean" />
+    <attr name="slimDesign" format="boolean" />
 
     <declare-styleable name="RMSwitch">
         <attr name="checked" format="boolean" />
         <attr name="enabled" />
         <attr name="forceAspectRatio" />
+        <attr name="slimDesign"/>
 
         <attr name="switchBkgCheckedColor" format="color" />
         <attr name="switchBkgNotCheckedColor" format="color" />
@@ -26,6 +28,7 @@
         </attr>
         <attr name="enabled" />
         <attr name="forceAspectRatio" />
+        <attr name="slimDesign"/>
         <attr name="right_to_left" format="boolean" />
 
         <attr name="switchBkgRightColor" format="color" />

@@ -61,6 +61,7 @@
                     android:id="@+id/rm_triswitch2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:slimDesign="true"
                     app:state="middle"
                     app:switchBkgLeftColor="@color/pink"
                     app:switchBkgMiddleColor="@color/grey"
@@ -145,7 +146,7 @@
                     app:switchBkgLeftColor="@color/greyDark"
                     app:switchToggleLeftColor="@color/greyDark"
                     app:switchToggleMiddleColor="@color/greyDark"
-                    app:switchToggleRightColor="@color/greyDark"/>
+                    app:switchToggleRightColor="@color/greyDark" />
 
                 <TextView
                     android:id="@+id/txt_rm_triswitch_state5"
@@ -203,6 +204,7 @@
                     android:id="@+id/rm_switch2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:slimDesign="true"
                     app:switchBkgCheckedColor="@color/blue"
                     app:switchBkgNotCheckedColor="@color/pink"
                     app:switchToggleCheckedColor="@color/blueDark"
@@ -328,7 +330,7 @@
                 <com.rm.rmswitch.RMSwitch
                     android:id="@+id/rm_switch8"
                     android:layout_width="56dp"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     app:switchBkgCheckedColor="@color/black"
                     app:switchBkgNotCheckedColor="@color/black"
                     app:switchToggleCheckedColor="@color/white" />
