@@ -3,16 +3,14 @@ package com.rm.rmswitch;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.StyleableRes;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,6 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Created by Riccardo on 31/08/16.
  */
+@SuppressWarnings("ResourceType")
 public abstract class RMAbstractSwitch extends RelativeLayout
         implements Checkable, View.OnClickListener, TristateCheckable, View.OnLayoutChangeListener {
 
@@ -32,9 +31,19 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     public @interface State {
     }
 
+    // The possible switch designs
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({DESIGN_LARGE, DESIGN_SLIM, DESIGN_ANDROID})
+    public @interface SwitchDesign {
+    }
+
     public static final int STATE_LEFT = 0;
     public static final int STATE_MIDDLE = 1;
     public static final int STATE_RIGHT = 2;
+
+    public static final int DESIGN_LARGE = 0;
+    public static final int DESIGN_SLIM = 1;
+    public static final int DESIGN_ANDROID = 2;
 
     /**
      * If force aspect ratio or keep the given proportion
@@ -58,9 +67,10 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     protected ImageView mImgBkg;
 
     /**
-     * If the switch is large or slim design
+     * The switch design
      */
-    protected boolean mIsSlimDesign;
+    @SwitchDesign
+    protected int mSwitchDesign;
 
     /**
      * The switch container Layout
@@ -79,6 +89,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         this(context, attrs, 0);
     }
 
+    @SuppressWarnings("WrongConstant")
     public RMAbstractSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
@@ -87,10 +98,12 @@ public abstract class RMAbstractSwitch extends RelativeLayout
                 getTypedArrayResource(),
                 defStyleAttr, 0);
 
-        // Check if slim design or not
-        mIsSlimDesign = typedArray.getBoolean(R.styleable.RMSwitch_slimDesign, false);
-        if (!mIsSlimDesign)
-            mIsSlimDesign = typedArray.getBoolean(R.styleable.RMTristateSwitch_slimDesign, false);
+        // Check the switch style
+        mSwitchDesign = typedArray.getInt(R.styleable.RMSwitch_switchDesign, DESIGN_LARGE);
+        if (mSwitchDesign == DESIGN_LARGE) {
+            mSwitchDesign = typedArray
+                    .getInt(R.styleable.RMTristateSwitch_switchDesign, DESIGN_LARGE);
+        }
 
         setupLayout();
 
@@ -119,9 +132,9 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         }
     }
 
-    public void setSlimDesign(boolean slimDesign) {
-        if (slimDesign != mIsSlimDesign) {
-            mIsSlimDesign = slimDesign;
+    public void setSlimDesign(@SwitchDesign int switchDesign) {
+        if (switchDesign != mSwitchDesign) {
+            mSwitchDesign = switchDesign;
             setupLayout();
             setupSwitchAppearance();
 
@@ -135,17 +148,13 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         return mForceAspectRatio;
     }
 
-    // Keep for compatibility, it was a damn typo!
-    public boolean isForceAspectRation() {
-        return isForceAspectRatio();
-    }
-
     public boolean isEnabled() {
         return mIsEnabled;
     }
 
-    public boolean isSlimDesign() {
-        return mIsSlimDesign;
+    @SwitchDesign
+    public int getSwitchDesign() {
+        return mSwitchDesign;
     }
 
     protected void setupLayout() {
@@ -159,11 +168,11 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             sLayoutTransition.enableTransitionType(LayoutTransition.CHANGING);
             sLayoutTransition.setInterpolator(
                     LayoutTransition.CHANGING,
-                    new DecelerateInterpolator());
+                    new FastOutLinearInInterpolator());
         }
 
         ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(mIsSlimDesign ?
+                .inflate(mSwitchDesign == DESIGN_SLIM ?
                                 R.layout.switch_view_slim :
                                 R.layout.switch_view,
                         this, true);
@@ -190,7 +199,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             int standardWith = (int) Utils
                     .convertDpToPixel(
                             getContext(),
-                            getResources().getDimension(getSwitchStandardWidth()));
+                            getResources().getDimensionPixelSize(getSwitchStandardWidth()));
 
             // If unspecified or wrap_content where there's more space than the standard,
             // set the standard dimensions
@@ -204,7 +213,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             int standardHeight = (int) Utils
                     .convertDpToPixel(
                             getContext(),
-                            getResources().getDimension(getSwitchStandardHeight()));
+                            getResources().getDimensionPixelSize(getSwitchStandardHeight()));
 
             // If unspecified or wrap_content where there's more space than the standard,
             // set the standard dimensions
@@ -242,25 +251,32 @@ public abstract class RMAbstractSwitch extends RelativeLayout
 
     private void setBkgMargins(int heightMeasureSpec) {
         // If slim design add some margin to the background line, else remove them
-        int calculatedBackgroundMargin;
-        if (!mIsSlimDesign)
-            calculatedBackgroundMargin = 0;
-        else
-            calculatedBackgroundMargin = MeasureSpec.getSize(heightMeasureSpec) / 6;
+        int calculatedBackgroundSideMargin = 0;
+        int calculatedBackgroundTopBottomMargin = 0;
+
+        if (mSwitchDesign == DESIGN_SLIM || mSwitchDesign == DESIGN_ANDROID) {
+            calculatedBackgroundSideMargin = MeasureSpec.getSize(heightMeasureSpec) / 6;
+        }
+
+        if (mSwitchDesign == DESIGN_ANDROID) {
+            calculatedBackgroundTopBottomMargin = MeasureSpec.getSize(heightMeasureSpec) / 6;
+        }
 
         ((RelativeLayout.LayoutParams) mImgBkg.getLayoutParams()).setMargins(
-                calculatedBackgroundMargin, 0, calculatedBackgroundMargin, 0);
+                calculatedBackgroundSideMargin, calculatedBackgroundTopBottomMargin,
+                calculatedBackgroundSideMargin, calculatedBackgroundTopBottomMargin);
     }
 
     private void setToggleMargins(int heightMeasureSpec) {
         // Set the margin after all measures have been done
         int calculatedToggleMargin;
-        if (!mIsSlimDesign)
+        if (mSwitchDesign == DESIGN_LARGE) {
             calculatedToggleMargin = MeasureSpec.getSize(heightMeasureSpec) > 0 ?
                     MeasureSpec.getSize(heightMeasureSpec) / 6 :
                     (int) Utils.convertDpToPixel(getContext(), 2);
-        else
+        } else {
             calculatedToggleMargin = 0;
+        }
 
         ((RelativeLayout.LayoutParams) mImgToggle.getLayoutParams()).setMargins(
                 calculatedToggleMargin, calculatedToggleMargin,
@@ -270,14 +286,10 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     private void setToggleImagePadding() {
         // Set the padding of the image
         int padding;
-        if (mIsSlimDesign)
-            padding = mImgToggle.getHeight() / 6;
-        else
+        if (mSwitchDesign == DESIGN_LARGE) {
             padding = 0;
-        try {
-            if (((RMTristateSwitch) this).getSwitchBkgLeftColor() == Color.parseColor("#616161"))
-                Log.w("PADDING", "Set to " + padding);
-        } catch (Exception ignored) {
+        } else {
+            padding = mImgToggle.getHeight() / 6;
         }
         mImgToggle.setPadding(padding, padding, padding, padding);
     }
@@ -350,7 +362,8 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     public abstract void setupSwitchCustomAttributes(TypedArray a);
 
     @Override
-    public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+    public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6,
+                               int i7) {
         // Use this listener just when changing the switch layout
         removeOnLayoutChangeListener(this);
 

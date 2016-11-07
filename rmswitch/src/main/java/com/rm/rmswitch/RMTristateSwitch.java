@@ -21,10 +21,11 @@ import java.util.List;
  * Created by Riccardo Moro on 18/08/2016.
  */
 public class RMTristateSwitch extends RMAbstractSwitch {
-    private static final String BUNDLE_KEY_STATE = "bundle_key_state";
     private static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
+    private static final String BUNDLE_KEY_STATE = "bundle_key_state";
     private static final String BUNDLE_KEY_ENABLED = "bundle_key_enabled";
     private static final String BUNDLE_KEY_FORCE_ASPECT_RATIO = "bundle_key_force_aspect_ratio";
+    private static final String BUNDLE_KEY_DESIGN = "bundle_key_design";
     private static final String BUNDLE_KEY_RIGHT_TO_LEFT = "bundle_key_right_to_left";
     private static final String BUNDLE_KEY_BKG_LEFT_COLOR = "bundle_key_bkg_left_color";
     private static final String BUNDLE_KEY_BKG_MIDDLE_COLOR = "bundle_key_bkg_middle_color";
@@ -162,6 +163,8 @@ public class RMTristateSwitch extends RMAbstractSwitch {
         bundle.putBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, mForceAspectRatio);
         bundle.putBoolean(BUNDLE_KEY_RIGHT_TO_LEFT, mRightToLeft);
 
+        bundle.putInt(BUNDLE_KEY_DESIGN, mSwitchDesign);
+
         bundle.putInt(BUNDLE_KEY_BKG_LEFT_COLOR, mBkgLeftColor);
         bundle.putInt(BUNDLE_KEY_BKG_MIDDLE_COLOR, mBkgMiddleColor);
         bundle.putInt(BUNDLE_KEY_BKG_RIGHT_COLOR, mBkgRightColor);
@@ -177,6 +180,7 @@ public class RMTristateSwitch extends RMAbstractSwitch {
         return bundle;
     }
 
+    @SuppressWarnings("WrongConstant")
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle prevState = (Bundle) state;
@@ -186,6 +190,8 @@ public class RMTristateSwitch extends RMAbstractSwitch {
         // Restore the switch state notifying the observers
         mIsEnabled = prevState.getBoolean(BUNDLE_KEY_ENABLED, true);
         mForceAspectRatio = prevState.getBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, true);
+
+        mSwitchDesign = prevState.getInt(BUNDLE_KEY_DESIGN, DESIGN_LARGE);
 
         mBkgLeftColor = prevState.getInt(BUNDLE_KEY_BKG_LEFT_COLOR,
                 Utils.getDefaultBackgroundColor(getContext()));
@@ -416,7 +422,7 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     private void notifyObservers() {
         if (mObservers != null) {
             for (RMTristateSwitchObserver observer : mObservers) {
-                observer.onCheckStateChange(mCurrentState);
+                observer.onCheckStateChange(this, mCurrentState);
             }
         }
     }
@@ -675,6 +681,6 @@ public class RMTristateSwitch extends RMAbstractSwitch {
 
     // Public interface to watch the switch state changes
     public interface RMTristateSwitchObserver {
-        void onCheckStateChange(@State int state);
+        void onCheckStateChange(RMTristateSwitch switchView, @State int state);
     }
 }

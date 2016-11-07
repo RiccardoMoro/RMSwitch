@@ -5,4 +5,6 @@
 
     <dimen name="rm_triswitch_standard_height">13dp</dimen>
     <dimen name="rm_triswitch_standard_width">33.8dp</dimen>
+
+    <dimen name="slim_design_height">5dp</dimen>
 </resources>

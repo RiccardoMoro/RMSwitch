@@ -1,11 +1,11 @@
 package com.rm.switchsample;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.rm.rmswitch.RMAbstractSwitch;
 import com.rm.rmswitch.RMSwitch;
 import com.rm.rmswitch.RMTristateSwitch;
 
@@ -35,6 +35,10 @@ public class ActivityMain extends AppCompatActivity {
     private RMSwitch mRMSwitch8;
     private TextView mTxtRMSwitchState8;
 
+    private RMSwitch mRMSwitch9;
+    private TextView mTxtRMSwitchState9;
+
+
     private RMTristateSwitch mRMTristateSwitch1;
     private TextView mTxtRMTristateSwitchState1;
 
@@ -50,24 +54,27 @@ public class ActivityMain extends AppCompatActivity {
     private RMTristateSwitch mRMTristateSwitch5;
     private TextView mTxtRMTristateSwitchState5;
 
+    private RMTristateSwitch mRMTristateSwitch6;
+    private TextView mTxtRMTristateSwitchState6;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTxtRMSwitchState1 = (TextView) findViewById(R.id.txt_rm_switch_state1);
-        mTxtRMSwitchState2 = (TextView) findViewById(R.id.txt_rm_switch_state2);
-        mTxtRMSwitchState3 = (TextView) findViewById(R.id.txt_rm_switch_state3);
-        mTxtRMSwitchState4 = (TextView) findViewById(R.id.txt_rm_switch_state4);
-        mTxtRMSwitchState5 = (TextView) findViewById(R.id.txt_rm_switch_state5);
-        mTxtRMSwitchState6 = (TextView) findViewById(R.id.txt_rm_switch_state6);
-        mTxtRMSwitchState7 = (TextView) findViewById(R.id.txt_rm_switch_state7);
-        mTxtRMSwitchState8 = (TextView) findViewById(R.id.txt_rm_switch_state8);
         mRMTristateSwitch1 = (RMTristateSwitch) findViewById(R.id.rm_triswitch1);
         mRMTristateSwitch2 = (RMTristateSwitch) findViewById(R.id.rm_triswitch2);
         mRMTristateSwitch3 = (RMTristateSwitch) findViewById(R.id.rm_triswitch3);
         mRMTristateSwitch4 = (RMTristateSwitch) findViewById(R.id.rm_triswitch4);
         mRMTristateSwitch5 = (RMTristateSwitch) findViewById(R.id.rm_triswitch5);
+        mRMTristateSwitch6 = (RMTristateSwitch) findViewById(R.id.rm_triswitch6);
+
+        mTxtRMTristateSwitchState1 = (TextView) findViewById(R.id.txt_rm_triswitch_state1);
+        mTxtRMTristateSwitchState2 = (TextView) findViewById(R.id.txt_rm_triswitch_state2);
+        mTxtRMTristateSwitchState3 = (TextView) findViewById(R.id.txt_rm_triswitch_state3);
+        mTxtRMTristateSwitchState4 = (TextView) findViewById(R.id.txt_rm_triswitch_state4);
+        mTxtRMTristateSwitchState5 = (TextView) findViewById(R.id.txt_rm_triswitch_state5);
+        mTxtRMTristateSwitchState6 = (TextView) findViewById(R.id.txt_rm_triswitch_state6);
 
         mRMSwitch1 = (RMSwitch) findViewById(R.id.rm_switch1);
         mRMSwitch2 = (RMSwitch) findViewById(R.id.rm_switch2);
@@ -77,16 +84,22 @@ public class ActivityMain extends AppCompatActivity {
         mRMSwitch6 = (RMSwitch) findViewById(R.id.rm_switch6);
         mRMSwitch7 = (RMSwitch) findViewById(R.id.rm_switch7);
         mRMSwitch8 = (RMSwitch) findViewById(R.id.rm_switch8);
-        mTxtRMTristateSwitchState1 = (TextView) findViewById(R.id.txt_rm_triswitch_state1);
-        mTxtRMTristateSwitchState2 = (TextView) findViewById(R.id.txt_rm_triswitch_state2);
-        mTxtRMTristateSwitchState3 = (TextView) findViewById(R.id.txt_rm_triswitch_state3);
-        mTxtRMTristateSwitchState4 = (TextView) findViewById(R.id.txt_rm_triswitch_state4);
-        mTxtRMTristateSwitchState5 = (TextView) findViewById(R.id.txt_rm_triswitch_state5);
+        mRMSwitch9 = (RMSwitch) findViewById(R.id.rm_switch9);
+
+        mTxtRMSwitchState1 = (TextView) findViewById(R.id.txt_rm_switch_state1);
+        mTxtRMSwitchState2 = (TextView) findViewById(R.id.txt_rm_switch_state2);
+        mTxtRMSwitchState3 = (TextView) findViewById(R.id.txt_rm_switch_state3);
+        mTxtRMSwitchState4 = (TextView) findViewById(R.id.txt_rm_switch_state4);
+        mTxtRMSwitchState5 = (TextView) findViewById(R.id.txt_rm_switch_state5);
+        mTxtRMSwitchState6 = (TextView) findViewById(R.id.txt_rm_switch_state6);
+        mTxtRMSwitchState7 = (TextView) findViewById(R.id.txt_rm_switch_state7);
+        mTxtRMSwitchState8 = (TextView) findViewById(R.id.txt_rm_switch_state8);
+        mTxtRMSwitchState9 = (TextView) findViewById(R.id.txt_rm_switch_state9);
 
 
         mRMSwitch1.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
             @Override
-            public void onCheckStateChange(boolean isChecked) {
+            public void onCheckStateChange(RMSwitch switchView, boolean isChecked) {
                 mTxtRMSwitchState1.setText("Checked: " + isChecked);
             }
         });
@@ -103,7 +116,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mRMSwitch2.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
             @Override
-            public void onCheckStateChange(boolean isChecked) {
+            public void onCheckStateChange(RMSwitch switchView, boolean isChecked) {
                 mTxtRMSwitchState2.setText("Checked: " + isChecked);
             }
         });
@@ -112,7 +125,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mRMSwitch3.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
             @Override
-            public void onCheckStateChange(boolean isChecked) {
+            public void onCheckStateChange(RMSwitch switchView, boolean isChecked) {
                 mTxtRMSwitchState3.setText("Checked: " + isChecked);
             }
         });
@@ -121,7 +134,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mRMSwitch4.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
             @Override
-            public void onCheckStateChange(boolean isChecked) {
+            public void onCheckStateChange(RMSwitch switchView, boolean isChecked) {
                 mTxtRMSwitchState4.setText("Checked: " + isChecked);
             }
         });
@@ -130,7 +143,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mRMSwitch5.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
             @Override
-            public void onCheckStateChange(boolean isChecked) {
+            public void onCheckStateChange(RMSwitch switchView, boolean isChecked) {
                 mTxtRMSwitchState5.setText("Checked: " + isChecked);
             }
         });
@@ -139,7 +152,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mRMSwitch6.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
             @Override
-            public void onCheckStateChange(boolean isChecked) {
+            public void onCheckStateChange(RMSwitch switchView, boolean isChecked) {
                 mTxtRMSwitchState6.setText("Checked: " + isChecked);
             }
         });
@@ -148,7 +161,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mRMSwitch7.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
             @Override
-            public void onCheckStateChange(boolean isChecked) {
+            public void onCheckStateChange(RMSwitch switchView, boolean isChecked) {
                 mTxtRMSwitchState7.setText("Checked: " + isChecked);
             }
         });
@@ -157,11 +170,19 @@ public class ActivityMain extends AppCompatActivity {
 
         mRMSwitch8.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
             @Override
-            public void onCheckStateChange(boolean isChecked) {
+            public void onCheckStateChange(RMSwitch switchView, boolean isChecked) {
                 mTxtRMSwitchState8.setText("Checked: " + isChecked);
             }
         });
-        mTxtRMSwitchState8.setText("Checked: " + mRMSwitch8.isChecked());
+        mTxtRMSwitchState8.setText("Checked: " + mRMSwitch9.isChecked());
+
+        mRMSwitch9.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
+            @Override
+            public void onCheckStateChange(RMSwitch switchView, boolean isChecked) {
+                mTxtRMSwitchState9.setText("Checked: " + isChecked);
+            }
+        });
+        mTxtRMSwitchState9.setText("Checked: " + mRMSwitch9.isChecked());
 
 
         int state = mRMTristateSwitch1.getState();
@@ -172,7 +193,8 @@ public class ActivityMain extends AppCompatActivity {
                         "Right");
         mRMTristateSwitch1.addSwitchObserver(new RMTristateSwitch.RMTristateSwitchObserver() {
             @Override
-            public void onCheckStateChange(@RMTristateSwitch.State int state) {
+            public void onCheckStateChange(RMTristateSwitch switchView,
+                                           @RMTristateSwitch.State int state) {
                 mTxtRMTristateSwitchState1.setText(state == RMTristateSwitch.STATE_LEFT ?
                         "Left" :
                         state == RMTristateSwitch.STATE_MIDDLE ?
@@ -189,7 +211,8 @@ public class ActivityMain extends AppCompatActivity {
                         "Right");
         mRMTristateSwitch2.addSwitchObserver(new RMTristateSwitch.RMTristateSwitchObserver() {
             @Override
-            public void onCheckStateChange(@RMTristateSwitch.State int state) {
+            public void onCheckStateChange(RMTristateSwitch switchView,
+                                           @RMTristateSwitch.State int state) {
                 mTxtRMTristateSwitchState2.setText(state == RMTristateSwitch.STATE_LEFT ?
                         "Left" :
                         state == RMTristateSwitch.STATE_MIDDLE ?
@@ -206,7 +229,8 @@ public class ActivityMain extends AppCompatActivity {
                         "Right");
         mRMTristateSwitch3.addSwitchObserver(new RMTristateSwitch.RMTristateSwitchObserver() {
             @Override
-            public void onCheckStateChange(@RMTristateSwitch.State int state) {
+            public void onCheckStateChange(RMTristateSwitch switchView,
+                                           @RMTristateSwitch.State int state) {
                 mTxtRMTristateSwitchState3.setText(state == RMTristateSwitch.STATE_LEFT ?
                         "Left" :
                         state == RMTristateSwitch.STATE_MIDDLE ?
@@ -223,7 +247,8 @@ public class ActivityMain extends AppCompatActivity {
                         "Right");
         mRMTristateSwitch4.addSwitchObserver(new RMTristateSwitch.RMTristateSwitchObserver() {
             @Override
-            public void onCheckStateChange(@RMTristateSwitch.State int state) {
+            public void onCheckStateChange(RMTristateSwitch switchView,
+                                           @RMTristateSwitch.State int state) {
                 mTxtRMTristateSwitchState4.setText(state == RMTristateSwitch.STATE_LEFT ?
                         "Left" :
                         state == RMTristateSwitch.STATE_MIDDLE ?
@@ -243,8 +268,27 @@ public class ActivityMain extends AppCompatActivity {
                         "Right");
         mRMTristateSwitch5.addSwitchObserver(new RMTristateSwitch.RMTristateSwitchObserver() {
             @Override
-            public void onCheckStateChange(@RMTristateSwitch.State int state) {
+            public void onCheckStateChange(RMTristateSwitch switchView,
+                                           @RMTristateSwitch.State int state) {
                 mTxtRMTristateSwitchState5.setText(state == RMTristateSwitch.STATE_LEFT ?
+                        "Left" :
+                        state == RMTristateSwitch.STATE_MIDDLE ?
+                                "Middle" :
+                                "Right");
+            }
+        });
+
+        state = mRMTristateSwitch6.getState();
+        mTxtRMTristateSwitchState6.setText(state == RMTristateSwitch.STATE_LEFT ?
+                "Left" :
+                state == RMTristateSwitch.STATE_MIDDLE ?
+                        "Middle" :
+                        "Right");
+        mRMTristateSwitch6.addSwitchObserver(new RMTristateSwitch.RMTristateSwitchObserver() {
+            @Override
+            public void onCheckStateChange(RMTristateSwitch switchView,
+                                           @RMTristateSwitch.State int state) {
+                mTxtRMTristateSwitchState6.setText(state == RMTristateSwitch.STATE_LEFT ?
                         "Left" :
                         state == RMTristateSwitch.STATE_MIDDLE ?
                                 "Middle" :

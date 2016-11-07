@@ -20,9 +20,10 @@ import java.util.List;
  * Created by Riccardo Moro on 29/07/2016.
  */
 public class RMSwitch extends RMAbstractSwitch {
-    private static final String BUNDLE_KEY_CHECKED = "bundle_key_checked";
     private static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
+    private static final String BUNDLE_KEY_CHECKED = "bundle_key_checked";
     private static final String BUNDLE_KEY_ENABLED = "bundle_key_enabled";
+    private static final String BUNDLE_KEY_DESIGN = "bundle_key_design";
     private static final String BUNDLE_KEY_FORCE_ASPECT_RATIO = "bundle_key_force_aspect_ratio";
     private static final String BUNDLE_KEY_BKG_CHECKED_COLOR = "bundle_key_bkg_checked_color";
     private static final String BUNDLE_KEY_BKG_NOT_CHECKED_COLOR =
@@ -96,6 +97,7 @@ public class RMSwitch extends RMAbstractSwitch {
 
         bundle.putBoolean(BUNDLE_KEY_CHECKED, mIsChecked);
         bundle.putBoolean(BUNDLE_KEY_ENABLED, mIsEnabled);
+        bundle.putInt(BUNDLE_KEY_DESIGN, mSwitchDesign);
         bundle.putBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, mForceAspectRatio);
         bundle.putInt(BUNDLE_KEY_BKG_CHECKED_COLOR, mBkgCheckedColor);
         bundle.putInt(BUNDLE_KEY_BKG_NOT_CHECKED_COLOR, mBkgNotCheckedColor);
@@ -108,6 +110,7 @@ public class RMSwitch extends RMAbstractSwitch {
         return bundle;
     }
 
+    @SuppressWarnings("WrongConstant")
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle prevState = (Bundle) state;
@@ -117,6 +120,7 @@ public class RMSwitch extends RMAbstractSwitch {
         // Restore the check state notifying the observers
         mIsEnabled = prevState.getBoolean(BUNDLE_KEY_ENABLED, true);
         mForceAspectRatio = prevState.getBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, true);
+        mSwitchDesign = prevState.getInt(BUNDLE_KEY_DESIGN, DESIGN_LARGE);
         mBkgCheckedColor = prevState.getInt(BUNDLE_KEY_BKG_CHECKED_COLOR,
                 Utils.getDefaultBackgroundColor(getContext()));
         mBkgNotCheckedColor = prevState.getInt(BUNDLE_KEY_BKG_NOT_CHECKED_COLOR,
@@ -235,7 +239,7 @@ public class RMSwitch extends RMAbstractSwitch {
     private void notifyObservers() {
         if (mObservers != null) {
             for (RMSwitchObserver observer : mObservers) {
-                observer.onCheckStateChange(mIsChecked);
+                observer.onCheckStateChange(this, mIsChecked);
             }
         }
     }
@@ -467,7 +471,7 @@ public class RMSwitch extends RMAbstractSwitch {
 
     // Public interface to watch the check state change
     public interface RMSwitchObserver {
-        void onCheckStateChange(boolean isChecked);
+        void onCheckStateChange(RMSwitch switchView, boolean isChecked);
     }
 
     @Override
