@@ -20,9 +20,7 @@ import java.util.List;
  * Created by Riccardo Moro on 29/07/2016.
  */
 public class RMSwitch extends RMAbstractSwitch {
-    private static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
     private static final String BUNDLE_KEY_CHECKED = "bundle_key_checked";
-    private static final String BUNDLE_KEY_ENABLED = "bundle_key_enabled";
     private static final String BUNDLE_KEY_DESIGN = "bundle_key_design";
     private static final String BUNDLE_KEY_FORCE_ASPECT_RATIO = "bundle_key_force_aspect_ratio";
     private static final String BUNDLE_KEY_BKG_CHECKED_COLOR = "bundle_key_bkg_checked_color";
@@ -92,17 +90,16 @@ public class RMSwitch extends RMAbstractSwitch {
 
     @Override
     protected Parcelable onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(BUNDLE_KEY_SUPER_DATA, super.onSaveInstanceState());
+        Bundle bundle = (Bundle) super.onSaveInstanceState();
 
         bundle.putBoolean(BUNDLE_KEY_CHECKED, mIsChecked);
-        bundle.putBoolean(BUNDLE_KEY_ENABLED, mIsEnabled);
-        bundle.putInt(BUNDLE_KEY_DESIGN, mSwitchDesign);
-        bundle.putBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, mForceAspectRatio);
+
         bundle.putInt(BUNDLE_KEY_BKG_CHECKED_COLOR, mBkgCheckedColor);
         bundle.putInt(BUNDLE_KEY_BKG_NOT_CHECKED_COLOR, mBkgNotCheckedColor);
+
         bundle.putInt(BUNDLE_KEY_TOGGLE_CHECKED_COLOR, mToggleCheckedColor);
         bundle.putInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR, mToggleNotCheckedColor);
+
         bundle.putInt(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES, mToggleCheckedDrawableResource);
         bundle.putInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES,
                 mToggleNotCheckedDrawableResource);
@@ -113,22 +110,20 @@ public class RMSwitch extends RMAbstractSwitch {
     @SuppressWarnings("WrongConstant")
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        Bundle prevState = (Bundle) state;
-
-        super.onRestoreInstanceState(prevState.getParcelable(BUNDLE_KEY_SUPER_DATA));
+        super.onRestoreInstanceState(state);
+        Bundle prevState =  (Bundle) state;
 
         // Restore the check state notifying the observers
-        mIsEnabled = prevState.getBoolean(BUNDLE_KEY_ENABLED, true);
-        mForceAspectRatio = prevState.getBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, true);
-        mSwitchDesign = prevState.getInt(BUNDLE_KEY_DESIGN, DESIGN_LARGE);
         mBkgCheckedColor = prevState.getInt(BUNDLE_KEY_BKG_CHECKED_COLOR,
                 Utils.getDefaultBackgroundColor(getContext()));
         mBkgNotCheckedColor = prevState.getInt(BUNDLE_KEY_BKG_NOT_CHECKED_COLOR,
                 mBkgCheckedColor);
+
         mToggleCheckedColor = prevState.getInt(BUNDLE_KEY_TOGGLE_CHECKED_COLOR,
                 Utils.getAccentColor(getContext()));
         mToggleNotCheckedColor = prevState.getInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR,
                 Color.WHITE);
+
         mToggleCheckedDrawableResource = prevState
                 .getInt(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES, 0);
         mToggleNotCheckedDrawableResource = prevState

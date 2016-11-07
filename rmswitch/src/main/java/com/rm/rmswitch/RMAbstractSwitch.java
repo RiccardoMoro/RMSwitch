@@ -4,6 +4,8 @@ import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.StyleableRes;
@@ -24,6 +26,11 @@ import java.lang.annotation.RetentionPolicy;
 @SuppressWarnings("ResourceType")
 public abstract class RMAbstractSwitch extends RelativeLayout
         implements Checkable, View.OnClickListener, TristateCheckable, View.OnLayoutChangeListener {
+
+    protected static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
+    protected static final String BUNDLE_KEY_ENABLED = "bundle_key_enabled";
+    protected static final String BUNDLE_KEY_FORCE_ASPECT_RATIO = "bundle_key_force_aspect_ratio";
+    protected static final String BUNDLE_KEY_DESIGN = "bundle_key_design";
 
     // The possible toggle states
     @Retention(RetentionPolicy.SOURCE)
@@ -117,6 +124,27 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         setOnClickListener(this);
     }
 
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(BUNDLE_KEY_SUPER_DATA, super.onSaveInstanceState());
+        bundle.putBoolean(BUNDLE_KEY_ENABLED, mIsEnabled);
+        bundle.putBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, mForceAspectRatio);
+        bundle.putInt(BUNDLE_KEY_DESIGN, mSwitchDesign);
+        return bundle;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        Bundle prevState = (Bundle) state;
+
+        super.onRestoreInstanceState(prevState.getParcelable(BUNDLE_KEY_SUPER_DATA));
+
+        mIsEnabled = prevState.getBoolean(BUNDLE_KEY_ENABLED, true);
+        mForceAspectRatio = prevState.getBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, true);
+        mSwitchDesign = prevState.getInt(BUNDLE_KEY_DESIGN, DESIGN_LARGE);
+    }
+
     // Setup programmatically the appearance
     public void setEnabled(boolean enabled) {
         if (mIsEnabled != enabled) {
@@ -132,7 +160,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         }
     }
 
-    public void setSlimDesign(@SwitchDesign int switchDesign) {
+    public void setDesign(@SwitchDesign int switchDesign) {
         if (switchDesign != mSwitchDesign) {
             mSwitchDesign = switchDesign;
             setupLayout();
