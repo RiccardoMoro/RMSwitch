@@ -3,6 +3,8 @@ package com.rm.rmswitch;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -350,6 +352,79 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         setAlpha(mIsEnabled ? ALPHA_ENABLED : ALPHA_DISABLED);
     }
 
+    protected void setupSwitchAppearance() {
+        // Create the background drawables
+        Drawable bkgDrawable = getSwitchCurrentBkgDrawable();
+
+        // Create the toggle drawables
+        Drawable toggleDrawable = getSwitchCurrentToggleDrawable();
+
+
+        // Create the toggle background drawables
+        Drawable toggleBkgDrawable = getSwitchCurrentToggleBkgDrawable();
+
+        // Set the background drawable
+        if (mImgBkg.getDrawable() != null) {
+            // Create the transition for the background
+            TransitionDrawable bkgTransitionDrawable = new TransitionDrawable(new Drawable[]{
+                    // If it was a transition drawable, take the last one of it's drawables
+                    mImgBkg.getDrawable() instanceof TransitionDrawable ?
+                            ((TransitionDrawable) mImgBkg.getDrawable()).getDrawable(1) :
+                            mImgBkg.getDrawable(),
+                    bkgDrawable
+            });
+            bkgTransitionDrawable.setCrossFadeEnabled(true);
+            // Set the transitionDrawable and start the animation
+            mImgBkg.setImageDrawable(bkgTransitionDrawable);
+            bkgTransitionDrawable.startTransition(ANIMATION_DURATION);
+        } else {
+            // No previous background image, just set the new one
+            mImgBkg.setImageDrawable(bkgDrawable);
+        }
+
+        // Set the toggle background
+        if (mImgToggle.getBackground() != null) {
+            // Create the transition for the background of the toggle
+            TransitionDrawable toggleBkgTransitionDrawable =
+                    new TransitionDrawable(new Drawable[]{
+                            // If it was a transition drawable, take the last one of it's drawables
+                            mImgToggle.getBackground() instanceof TransitionDrawable ?
+                                    ((TransitionDrawable) mImgToggle.getBackground()).getDrawable
+                                            (1) :
+                                    mImgToggle.getBackground(),
+                            toggleBkgDrawable
+                    });
+            toggleBkgTransitionDrawable.setCrossFadeEnabled(true);
+            // Set the transitionDrawable and start the animation
+            mImgToggle.setBackground(toggleBkgTransitionDrawable);
+            toggleBkgTransitionDrawable.startTransition(ANIMATION_DURATION);
+        } else {
+            // No previous background image, just set the new one
+            mImgToggle.setImageDrawable(toggleBkgDrawable);
+        }
+
+        // Set the toggle image
+        if (mImgToggle.getDrawable() != null) {
+            // Create the transition for the image of the toggle
+            TransitionDrawable toggleTransitionDrawable = new TransitionDrawable(new Drawable[]{
+                    // If it was a transition drawable, take the last one of it's drawables
+                    mImgToggle.getDrawable() instanceof TransitionDrawable ?
+                            ((TransitionDrawable) mImgToggle.getDrawable()).getDrawable(1) :
+                            mImgToggle.getDrawable(),
+                    toggleDrawable
+            });
+            toggleTransitionDrawable.setCrossFadeEnabled(true);
+            // Set the transitionDrawable and start the animation
+            mImgToggle.setImageDrawable(toggleTransitionDrawable);
+            toggleTransitionDrawable.startTransition(ANIMATION_DURATION);
+        } else {
+            // No previous toggle image, just set the new one
+            mImgToggle.setImageDrawable(toggleDrawable);
+        }
+
+        setSwitchAlpha();
+    }
+
     @Override
     public void toggle() {
     }
@@ -387,10 +462,14 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     @DimenRes
     public abstract int getSwitchStandardHeight();
 
+    public abstract Drawable getSwitchCurrentToggleDrawable();
+
+    public abstract Drawable getSwitchCurrentToggleBkgDrawable();
+
+    public abstract Drawable getSwitchCurrentBkgDrawable();
+
     @StyleableRes
     public abstract int[] getTypedArrayResource();
-
-    public abstract void setupSwitchAppearance();
 
     protected abstract void changeToggleGravity();
 

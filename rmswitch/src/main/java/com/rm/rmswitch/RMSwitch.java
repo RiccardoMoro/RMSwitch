@@ -111,7 +111,7 @@ public class RMSwitch extends RMAbstractSwitch {
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(state);
-        Bundle prevState =  (Bundle) state;
+        Bundle prevState = (Bundle) state;
 
         // Restore the check state notifying the observers
         mBkgCheckedColor = prevState.getInt(BUNDLE_KEY_BKG_CHECKED_COLOR,
@@ -247,103 +247,6 @@ public class RMSwitch extends RMAbstractSwitch {
             mObservers.clear();
     }
 
-    /**
-     * Setup all the switch custom attributes appearance
-     */
-    @Override
-    public void setupSwitchAppearance() {
-        // Create the background drawables
-        Drawable bkgDrawable =
-                ContextCompat.getDrawable(getContext(), R.drawable.rounded_border_bkg);
-        ((GradientDrawable) bkgDrawable).setColor(
-                mIsChecked
-                        ? mBkgCheckedColor
-                        : mBkgNotCheckedColor);
-
-        // Create the toggle drawables
-        Drawable toggleDrawable =
-                mIsChecked
-                        // If checked
-                        ? mToggleCheckedDrawableResource != 0
-                        ? ContextCompat.getDrawable(getContext(),
-                        mToggleCheckedDrawableResource)
-                        : null
-                        // If not checked
-                        : mToggleNotCheckedDrawableResource != 0
-                        ? ContextCompat.getDrawable(getContext(),
-                        mToggleNotCheckedDrawableResource)
-                        : null;
-
-
-        // Create the toggle background drawables
-        Drawable toggleBkgDrawable =
-                ContextCompat.getDrawable(getContext(), R.drawable.rounded_border_bkg);
-        ((GradientDrawable) toggleBkgDrawable).setColor(mIsChecked
-                ? mToggleCheckedColor
-                : mToggleNotCheckedColor);
-
-        // Set the background drawable
-        if (mImgBkg.getDrawable() != null) {
-            // Create the transition for the background
-            TransitionDrawable bkgTransitionDrawable = new TransitionDrawable(new Drawable[]{
-                    // If it was a transition drawable, take the last one of it's drawables
-                    mImgBkg.getDrawable() instanceof TransitionDrawable ?
-                            ((TransitionDrawable) mImgBkg.getDrawable()).getDrawable(1) :
-                            mImgBkg.getDrawable(),
-                    bkgDrawable
-            });
-            bkgTransitionDrawable.setCrossFadeEnabled(true);
-            // Set the transitionDrawable and start the animation
-            mImgBkg.setImageDrawable(bkgTransitionDrawable);
-            bkgTransitionDrawable.startTransition(ANIMATION_DURATION);
-        } else {
-            // No previous background image, just set the new one
-            mImgBkg.setImageDrawable(bkgDrawable);
-        }
-
-        // Set the toggle background
-        if (mImgToggle.getBackground() != null) {
-            // Create the transition for the background of the toggle
-            TransitionDrawable toggleBkgTransitionDrawable =
-                    new TransitionDrawable(new Drawable[]{
-                            // If it was a transition drawable, take the last one of it's drawables
-                            mImgToggle.getBackground() instanceof TransitionDrawable ?
-                                    ((TransitionDrawable) mImgToggle.getBackground()).getDrawable
-                                            (1) :
-                                    mImgToggle.getBackground(),
-                            toggleBkgDrawable
-                    });
-            toggleBkgTransitionDrawable.setCrossFadeEnabled(true);
-            // Set the transitionDrawable and start the animation
-            mImgToggle.setBackground(toggleBkgTransitionDrawable);
-            toggleBkgTransitionDrawable.startTransition(ANIMATION_DURATION);
-        } else {
-            // No previous background image, just set the new one
-            mImgToggle.setImageDrawable(toggleBkgDrawable);
-        }
-
-        // Set the toggle image
-        if (mImgToggle.getDrawable() != null) {
-            // Create the transition for the image of the toggle
-            TransitionDrawable toggleTransitionDrawable = new TransitionDrawable(new Drawable[]{
-                    // If it was a transition drawable, take the last one of it's drawables
-                    mImgToggle.getDrawable() instanceof TransitionDrawable ?
-                            ((TransitionDrawable) mImgToggle.getDrawable()).getDrawable(1) :
-                            mImgToggle.getDrawable(),
-                    toggleDrawable
-            });
-            toggleTransitionDrawable.setCrossFadeEnabled(true);
-            // Set the transitionDrawable and start the animation
-            mImgToggle.setImageDrawable(toggleTransitionDrawable);
-            toggleTransitionDrawable.startTransition(ANIMATION_DURATION);
-        } else {
-            // No previous toggle image, just set the new one
-            mImgToggle.setImageDrawable(toggleDrawable);
-        }
-
-        setSwitchAlpha();
-    }
-
     @Override
     public void setupSwitchCustomAttributes(TypedArray typedArray) {
         // Get the checked flag
@@ -456,6 +359,43 @@ public class RMSwitch extends RMAbstractSwitch {
     @Override
     public int getSwitchStandardHeight() {
         return R.dimen.rm_switch_standard_height;
+    }
+
+    @Override
+    public Drawable getSwitchCurrentToggleDrawable() {
+        return mIsChecked
+                // If checked
+                ? mToggleCheckedDrawableResource != 0
+                ? ContextCompat.getDrawable(getContext(),
+                mToggleCheckedDrawableResource)
+                : null
+                // If not checked
+                : mToggleNotCheckedDrawableResource != 0
+                ? ContextCompat.getDrawable(getContext(),
+                mToggleNotCheckedDrawableResource)
+                : null;
+    }
+
+    @Override
+    public Drawable getSwitchCurrentToggleBkgDrawable() {
+        Drawable toggleBkgDrawable = ContextCompat.getDrawable(getContext(),
+                R.drawable.rounded_border_bkg);
+        ((GradientDrawable) toggleBkgDrawable).setColor(mIsChecked
+                ? mToggleCheckedColor
+                : mToggleNotCheckedColor);
+
+        return toggleBkgDrawable;
+    }
+
+    @Override
+    public Drawable getSwitchCurrentBkgDrawable() {
+        Drawable bkgDrawable = ContextCompat.getDrawable(getContext(),
+                R.drawable.rounded_border_bkg);
+        ((GradientDrawable) bkgDrawable).setColor(
+                mIsChecked
+                        ? mBkgCheckedColor
+                        : mBkgNotCheckedColor);
+        return bkgDrawable;
     }
 
     @Override
