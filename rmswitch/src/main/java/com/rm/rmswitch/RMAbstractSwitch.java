@@ -32,6 +32,9 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     protected static final String BUNDLE_KEY_FORCE_ASPECT_RATIO = "bundle_key_force_aspect_ratio";
     protected static final String BUNDLE_KEY_DESIGN = "bundle_key_design";
 
+    protected static final float ALPHA_DISABLED = 0.6f;
+    protected static final float ALPHA_ENABLED = 1.0f;
+
     // The possible toggle states
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({STATE_LEFT, STATE_MIDDLE, STATE_RIGHT})
@@ -341,6 +344,10 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             // If API < 17 manually set the previously active rule with anchor 0 to remove it
             toggleParams.addRule(rule, 0);
         }
+    }
+
+    protected void setSwitchAlpha() {
+        setAlpha(mIsEnabled ? ALPHA_ENABLED : ALPHA_DISABLED);
     }
 
     @Override

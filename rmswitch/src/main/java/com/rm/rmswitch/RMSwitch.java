@@ -341,7 +341,7 @@ public class RMSwitch extends RMAbstractSwitch {
             mImgToggle.setImageDrawable(toggleDrawable);
         }
 
-        setAlpha(mIsEnabled ? 1f : 0.6f);
+        setSwitchAlpha();
     }
 
     @Override
