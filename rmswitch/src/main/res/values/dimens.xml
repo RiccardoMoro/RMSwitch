@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="rm_switch_standard_height">13dp</dimen>
-    <dimen name="rm_switch_standard_width">28.6dp</dimen>
+    <dimen name="rm_switch_standard_height">10dp</dimen>
+    <dimen name="rm_switch_standard_width">22.2dp</dimen>
 
-    <dimen name="rm_triswitch_standard_height">13dp</dimen>
-    <dimen name="rm_triswitch_standard_width">33.8dp</dimen>
+    <dimen name="rm_triswitch_standard_height">10dp</dimen>
+    <dimen name="rm_triswitch_standard_width">26.6dp</dimen>
 
     <dimen name="slim_design_height">5dp</dimen>
 </resources>
