@@ -8,7 +8,6 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.DimenRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.StyleableRes;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
@@ -150,7 +149,8 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         mSwitchDesign = prevState.getInt(BUNDLE_KEY_DESIGN, DESIGN_LARGE);
     }
 
-    // Setup programmatically the appearance
+
+    // Setters
     public void setEnabled(boolean enabled) {
         if (mIsEnabled != enabled) {
             mIsEnabled = enabled;
@@ -176,7 +176,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         }
     }
 
-    // Get the switch setup
+    // Getters
     public boolean isForceAspectRatio() {
         return mForceAspectRatio;
     }
@@ -190,6 +190,8 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         return mSwitchDesign;
     }
 
+
+    // Get all the current views
     protected void setupLayout() {
         // Inflate the stock switch view
         removeAllViews();
@@ -232,7 +234,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             int standardWith = (int) Utils
                     .convertDpToPixel(
                             getContext(),
-                            getResources().getDimensionPixelSize(getSwitchStandardWidth()));
+                            getSwitchStandardWidth());
 
             // If unspecified or wrap_content where there's more space than the standard,
             // set the standard dimensions
@@ -246,7 +248,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             int standardHeight = (int) Utils
                     .convertDpToPixel(
                             getContext(),
-                            getResources().getDimensionPixelSize(getSwitchStandardHeight()));
+                            getSwitchStandardHeight());
 
             // If unspecified or wrap_content where there's more space than the standard,
             // set the standard dimensions
@@ -456,10 +458,8 @@ public abstract class RMAbstractSwitch extends RelativeLayout
 
     public abstract float getSwitchAspectRatio();
 
-    @DimenRes
     public abstract int getSwitchStandardWidth();
 
-    @DimenRes
     public abstract int getSwitchStandardHeight();
 
     public abstract Drawable getSwitchCurrentToggleDrawable();

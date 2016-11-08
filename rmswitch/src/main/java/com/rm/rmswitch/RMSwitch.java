@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
@@ -353,12 +352,16 @@ public class RMSwitch extends RMAbstractSwitch {
 
     @Override
     public int getSwitchStandardWidth() {
-        return R.dimen.rm_switch_standard_width;
+        return getResources().getDimensionPixelSize(
+                getSwitchDesign() == DESIGN_ANDROID ?
+                        R.dimen.rm_switch_android_width : R.dimen.rm_switch_standard_width);
     }
 
     @Override
     public int getSwitchStandardHeight() {
-        return R.dimen.rm_switch_standard_height;
+        return getResources().getDimensionPixelSize(
+                getSwitchDesign() == DESIGN_ANDROID ?
+                        R.dimen.rm_switch_android_height : R.dimen.rm_switch_standard_height);
     }
 
     @Override

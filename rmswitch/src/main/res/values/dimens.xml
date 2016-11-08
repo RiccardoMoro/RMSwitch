@@ -2,9 +2,13 @@
 <resources>
     <dimen name="rm_switch_standard_height">10dp</dimen>
     <dimen name="rm_switch_standard_width">22.2dp</dimen>
+    <dimen name="rm_switch_android_height">8dp</dimen>
+    <dimen name="rm_switch_android_width">17.6dp</dimen>
 
     <dimen name="rm_triswitch_standard_height">10dp</dimen>
     <dimen name="rm_triswitch_standard_width">26.6dp</dimen>
+    <dimen name="rm_triswitch_android_height">8dp</dimen>
+    <dimen name="rm_triswitch_android_width">20.8dp</dimen>
 
     <dimen name="slim_design_height">5dp</dimen>
 </resources>

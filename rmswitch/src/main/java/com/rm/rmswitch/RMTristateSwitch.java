@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
@@ -116,12 +115,18 @@ public class RMTristateSwitch extends RMAbstractSwitch {
 
     @Override
     public int getSwitchStandardWidth() {
-        return R.dimen.rm_triswitch_standard_width;
+        return getResources().getDimensionPixelSize(
+                getSwitchDesign() != DESIGN_ANDROID ?
+                        R.dimen.rm_triswitch_standard_width :
+                        R.dimen.rm_triswitch_android_width);
     }
 
     @Override
     public int getSwitchStandardHeight() {
-        return R.dimen.rm_triswitch_standard_height;
+        return getResources().getDimensionPixelSize(
+                getSwitchDesign() != DESIGN_ANDROID ?
+                        R.dimen.rm_triswitch_standard_height :
+                        R.dimen.rm_triswitch_android_height);
     }
 
     @Override
@@ -344,8 +349,8 @@ public class RMTristateSwitch extends RMAbstractSwitch {
 
     @Override
     public Drawable getSwitchCurrentBkgDrawable() {
-        Drawable bkgDrawable = ContextCompat.getDrawable(getContext(), R.drawable
-                .rounded_border_bkg);
+        Drawable bkgDrawable = ContextCompat.getDrawable(getContext(),
+                R.drawable.rounded_border_bkg);
         ((GradientDrawable) bkgDrawable).setColor(mCurrentState == STATE_LEFT ?
                 mBkgLeftColor :
                 mCurrentState == STATE_MIDDLE ?

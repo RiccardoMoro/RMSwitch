@@ -355,7 +355,7 @@
 
                 <com.rm.rmswitch.RMSwitch
                     android:id="@+id/rm_switch8"
-                    android:layout_width="56dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:switchBkgCheckedColor="@color/black"
                     app:switchBkgNotCheckedColor="@color/black"
