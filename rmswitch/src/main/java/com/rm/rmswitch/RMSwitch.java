@@ -2,7 +2,9 @@ package com.rm.rmswitch;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -20,18 +22,16 @@ import java.util.List;
  */
 public class RMSwitch extends RMAbstractSwitch {
     private static final String BUNDLE_KEY_CHECKED = "bundle_key_checked";
-    private static final String BUNDLE_KEY_DESIGN = "bundle_key_design";
-    private static final String BUNDLE_KEY_FORCE_ASPECT_RATIO = "bundle_key_force_aspect_ratio";
     private static final String BUNDLE_KEY_BKG_CHECKED_COLOR = "bundle_key_bkg_checked_color";
     private static final String BUNDLE_KEY_BKG_NOT_CHECKED_COLOR =
             "bundle_key_bkg_not_checked_color";
     private static final String BUNDLE_KEY_TOGGLE_CHECKED_COLOR = "bundle_key_toggle_checked_color";
     private static final String BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR =
             "bundle_key_toggle_not_checked_color";
-    private static final String BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES =
-            "bundle_key_toggle_checked_drawable_res";
-    private static final String BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES =
-            "bundle_key_toggle_not_checked_drawable_res";
+    private static final String BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE =
+            "bundle_key_toggle_checked_drawable";
+    private static final String BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE =
+            "bundle_key_toggle_not_checked_drawable";
 
     private static final float SWITCH_STANDARD_ASPECT_RATIO = 2.2f;
 
@@ -65,14 +65,14 @@ public class RMSwitch extends RMAbstractSwitch {
     private int mToggleNotCheckedColor;
 
     /**
-     * The checked toggle drawable resource
+     * The checked toggle drawable
      */
-    private int mToggleCheckedDrawableResource;
+    private Drawable mToggleCheckedDrawable;
 
     /**
-     * The not checked toggle drawable resource
+     * The not checked toggle drawable
      */
-    private int mToggleNotCheckedDrawableResource;
+    private Drawable mToggleNotCheckedDrawable;
 
 
     public RMSwitch(Context context) {
@@ -99,9 +99,14 @@ public class RMSwitch extends RMAbstractSwitch {
         bundle.putInt(BUNDLE_KEY_TOGGLE_CHECKED_COLOR, mToggleCheckedColor);
         bundle.putInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR, mToggleNotCheckedColor);
 
-        bundle.putInt(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES, mToggleCheckedDrawableResource);
-        bundle.putInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES,
-                mToggleNotCheckedDrawableResource);
+        bundle.putParcelable(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE,
+                mToggleCheckedDrawable != null ?
+                        ((BitmapDrawable) mToggleCheckedDrawable).getBitmap() :
+                        null);
+        bundle.putParcelable(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE,
+                mToggleNotCheckedDrawable != null ?
+                        ((BitmapDrawable) mToggleNotCheckedDrawable).getBitmap() :
+                        null);
 
         return bundle;
     }
@@ -123,10 +128,10 @@ public class RMSwitch extends RMAbstractSwitch {
         mToggleNotCheckedColor = prevState.getInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR,
                 Color.WHITE);
 
-        mToggleCheckedDrawableResource = prevState
-                .getInt(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE_RES, 0);
-        mToggleNotCheckedDrawableResource = prevState
-                .getInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE_RES, mToggleCheckedDrawableResource);
+        mToggleCheckedDrawable = new BitmapDrawable(getResources(),
+                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE));
+        mToggleNotCheckedDrawable = new BitmapDrawable(getResources(),
+                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE));
 
         setChecked(prevState.getBoolean(BUNDLE_KEY_CHECKED, false));
         notifyObservers();
@@ -156,12 +161,22 @@ public class RMSwitch extends RMAbstractSwitch {
     }
 
     public void setSwitchToggleCheckedDrawableRes(@DrawableRes int drawable) {
-        mToggleCheckedDrawableResource = drawable;
-        setupSwitchAppearance();
+        setSwitchToggleCheckedDrawable(drawable != 0 ?
+                ContextCompat.getDrawable(getContext(), drawable) : null);
     }
 
     public void setSwitchToggleNotCheckedDrawableRes(@DrawableRes int drawable) {
-        mToggleNotCheckedDrawableResource = drawable;
+        setSwitchToggleNotCheckedDrawable(drawable != 0 ?
+                ContextCompat.getDrawable(getContext(), drawable) : null);
+    }
+
+    public void setSwitchToggleCheckedDrawable(Drawable drawable) {
+        mToggleCheckedDrawable = drawable;
+        setupSwitchAppearance();
+    }
+
+    public void setSwitchToggleNotCheckedDrawable(Drawable drawable) {
+        mToggleNotCheckedDrawable = drawable;
         setupSwitchAppearance();
     }
 
@@ -187,14 +202,12 @@ public class RMSwitch extends RMAbstractSwitch {
         return mToggleNotCheckedColor;
     }
 
-    @DrawableRes
-    public int getSwitchToggleCheckedDrawableRes() {
-        return mToggleCheckedDrawableResource;
+    public Drawable getSwitchToggleCheckedDrawable() {
+        return mToggleCheckedDrawable;
     }
 
-    @DrawableRes
-    public int getSwitchToggleNotCheckedDrawableRes() {
-        return mToggleNotCheckedDrawableResource;
+    public Drawable getSwitchToggleNotCheckedDrawable() {
+        return mToggleNotCheckedDrawable;
     }
 
     /**
@@ -282,15 +295,21 @@ public class RMSwitch extends RMAbstractSwitch {
 
 
         // Get the toggle checked and not checked images
-        mToggleCheckedDrawableResource = typedArray.getResourceId(
+        int toggleCheckedDrawableResource = typedArray.getResourceId(
                 R.styleable.RMSwitch_switchToggleCheckedImage, 0);
-        mToggleNotCheckedDrawableResource = typedArray.getResourceId(
+        int toggleNotCheckedDrawableResource = typedArray.getResourceId(
                 R.styleable.RMSwitch_switchToggleNotCheckedImage,
-                mToggleCheckedDrawableResource);
+                toggleCheckedDrawableResource);
 
         // If set the not checked drawable and not the checked one, copy the first
-        if (mToggleCheckedDrawableResource == 0 && mToggleNotCheckedDrawableResource != 0)
-            mToggleCheckedDrawableResource = mToggleNotCheckedDrawableResource;
+        if (toggleCheckedDrawableResource == 0 && toggleNotCheckedDrawableResource != 0)
+            toggleCheckedDrawableResource = toggleNotCheckedDrawableResource;
+
+        // Set the drawable from the drawable resource
+        mToggleCheckedDrawable = toggleCheckedDrawableResource != 0 ?
+                ContextCompat.getDrawable(getContext(), toggleCheckedDrawableResource) : null;
+        mToggleNotCheckedDrawable = toggleNotCheckedDrawableResource != 0 ?
+                ContextCompat.getDrawable(getContext(), toggleNotCheckedDrawableResource) : null;
 
         // Set manually checked flag, update the appearance and change the toggle gravity
         setChecked(mIsChecked);
@@ -366,17 +385,11 @@ public class RMSwitch extends RMAbstractSwitch {
 
     @Override
     public Drawable getSwitchCurrentToggleDrawable() {
-        return mIsChecked
+        return mIsChecked ?
                 // If checked
-                ? mToggleCheckedDrawableResource != 0
-                ? ContextCompat.getDrawable(getContext(),
-                mToggleCheckedDrawableResource)
-                : null
+                mToggleCheckedDrawable
                 // If not checked
-                : mToggleNotCheckedDrawableResource != 0
-                ? ContextCompat.getDrawable(getContext(),
-                mToggleNotCheckedDrawableResource)
-                : null;
+                : mToggleNotCheckedDrawable;
     }
 
     @Override
