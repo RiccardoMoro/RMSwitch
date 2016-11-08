@@ -6,8 +6,10 @@ RMSwitch
 A simple View that works like a switch, but with more customizations. <br />
 With the option to choose between two or three states. (from v1.1.0) <br /><br />
 
-** If you're upgrading from a version < 1.2.0, check the changelog of the 1.2.0 version, there are breaking changes!
+
+#####** If you're upgrading from a version < 1.2.0, check the changelog of the 1.2.0 version, there are breaking changes! <br />
 [Changelog] (CHANGELOG.md)
+
 
 Download
 ------
@@ -90,9 +92,15 @@ public class MainActivity extends AppCompatActivity {
         mSwitch.setSwitchBkgNotCheckedColor(Color.RED);
         mSwitch.setSwitchToggleCheckedColor(Color.BLACK);
         mSwitch.setSwitchToggleNotCheckedColor(Color.BLACK);
-        mTristateSwitch.setSwitchDesign(RMTristateSwitch.DESIGN_ANDROID);
-        mSwitch.setSwitchToggleCheckedDrawableRes(android.R.drawable.ic_media_next);
-        mSwitch.setSwitchToggleNotCheckedDrawableRes(android.R.drawable.ic_media_previous);
+        mSwitch.setSwitchDesign(RMTristateSwitch.DESIGN_ANDROID);
+        
+        
+        // You can choose if use drawable or drawable resource
+        //mSwitch.setSwitchToggleCheckedDrawableRes(android.R.drawable.ic_media_next);
+        mSwitch.setSwitchToggleCheckedDrawable(ContextCompat.getDrawable(this, android.R.drawable.ic_media_next));
+        
+        //mSwitch.setSwitchToggleNotCheckedDrawableRes(android.R.drawable.ic_media_previous);
+        mSwitch.setSwitchToggleNotCheckedDrawable(ContextCompat.getDrawable(this, android.R.drawable.ic_media_previous));
         
         
         // Setup the tristate switch
@@ -107,9 +115,18 @@ public class MainActivity extends AppCompatActivity {
         mTristateSwitch.setSwitchBkgLeftColor(Color.LTGRAY);
         mTristateSwitch.setSwitchBkgMiddleColor(Color.LTGRAY);
         mTristateSwitch.setSwitchBkgRightColor(Color.LTGRAY);
-        mTristateSwitch.setSwitchToggleLeftDrawableRes(android.R.drawable.ic_media_previous);
-        mTristateSwitch.setSwitchToggleMiddleDrawableRes(android.R.drawable.ic_media_play);
-        mTristateSwitch.setSwitchToggleRightDrawableRes(android.R.drawable.ic_media_next);
+        
+        
+        // You can choose if use drawable or drawable resource
+        //mTristateSwitch.setSwitchToggleLeftDrawableRes(android.R.drawable.ic_media_previous);
+        mTristateSwitch.setSwitchToggleLeftDrawable(ContextCompat.getDrawable(this, android.R.drawable.ic_media_previous));
+        
+        //mTristateSwitch.setSwitchToggleMiddleDrawableRes(android.R.drawable.ic_media_play);
+        mTristateSwitch.setSwitchToggleMiddleDrawable(ContextCompat.getDrawable(this, android.R.drawable.ic_media_play));
+        
+        //mTristateSwitch.setSwitchToggleRightDrawableRes(android.R.drawable.ic_media_next);
+        mTristateSwitch.setSwitchToggleRightDrawable(ContextCompat.getDrawable(this, android.R.drawable.ic_media_next));
+        
         
         // Add a Switch state observer
         mSwitch.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
@@ -152,7 +169,9 @@ RMSwitch
 | switchToggleCheckedColor      | setSwitchToggleCheckedColor(@ColorInt int color)                	| The color of the Switch toggle if checked                                                                       	| your current theme colorAccent attribute           	                                        |
 | switchToggleNotCheckedColor   | setSwitchToggleNotCheckedColor(@ColorInt int color)             	| The color of the Switch toggle if not checked                                                                   	| white                                              	                                        |
 | switchToggleCheckedImage      | setSwitchToggleCheckedDrawableRes(@DrawableRes int drawable)    	| The image to be shown on the toggle if checked                                                                  	| the same as switchToggleNotCheckedImage if set, none otherwise                                |
+|                               | setSwitchToggleCheckedDrawable(Drawable drawable)                 |                                                                                                                   |                                                                                               |
 | switchToggleNotCheckedImage   | setSwitchToggleNotCheckedDrawableRes(@DrawableRes int drawable) 	| The image to be shown on the toggle if not checked                                                              	| the same as switchToggleCheckedImage if set, none otherwise                                   |
+|                               | setSwitchToggleNotCheckedDrawable(Drawable drawable)                 |                                                                                                                   |                                                                                            |
 | switchDesign                  | setSwitchDesign(@SwitchDesign int switchDesign)                   | The switch design, one of the RMAbstractSwitch.DESIGN_*** constants, changes the appearance of the switch         | RMAbstractSwitch.DESIGN_LARGE                                                                 |
 
 RMTristateSwitch
@@ -170,8 +189,11 @@ RMTristateSwitch
 | switchToggleMiddleColor    	| setSwitchToggleMiddleColor(@ColorInt int color)                   | The background color of the Switch if in the middle state                                                         | your current theme primaryColor attribute          	                                        |
 | switchToggleRightColor    	| setSwitchToggleRightColor(@ColorInt int color)                   	| The background color of the Switch Toggle if in the right state                                                   | your current theme accentColor attribute          	                                        |
 | switchToggleLeftImage    	    | setSwitchToggleLeftDrawableRes(@ColorInt int color)               | The toggle image of the Switch if in the left state                                                               | the same as the one of the other states toggle image if at least one set, none otherwise 	    |
+|                               | setSwitchToggleLeftDrawable(Drawable drawable)                    |                                                                                                                   |                                                                                               |
 | switchToggleMiddleImage    	| setSwitchToggleMiddleDrawableRes(@ColorInt int color)             | The toggle image of the Switch if in the middle state                                                             | the same as the one of the other states toggle image if at least one set, none otherwise 	    |
+|                               | setSwitchToggleMiddleDrawable(Drawable drawable)                  |                                                                                                                   |                                                                                               |
 | switchToggleRightImage    	| setSwitchToggleRightDrawableRes(@ColorInt int color)              | The toggle image of the Switch if in the right state                                                              | the same as the one of the other states toggle image if at least one set, none otherwise 	    |
+|                               | setSwitchToggleRightDrawable(Drawable drawable)                   |                                                                                                                   |                                                                                               |
 | slimDesign                    | setSwitchDesign(@SwitchDesign int switchDesign)                   | The switch design, one of the RMAbstractSwitch.DESIGN_*** constants, changes the appearance of the switch         | RMAbstractSwitch.DESIGN_LARGE                                                                 |
 
 The changes between the Switch states will be automatically cross-faded, to obtain a smooth experience
