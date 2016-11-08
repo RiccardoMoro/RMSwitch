@@ -4,9 +4,7 @@
     <dimen name="rm_switch_android_height">24dp</dimen>
     <dimen name="rm_switch_android_width">52.8dp</dimen>
 
-    <dimen name="rm_triswitch_standard_height">26dp</dimen>
     <dimen name="rm_triswitch_standard_width">67.6dp</dimen>
-    <dimen name="rm_triswitch_android_height">24dp</dimen>
     <dimen name="rm_triswitch_android_width">62.4dp</dimen>
 
     <dimen name="slim_design_height">8dp</dimen>

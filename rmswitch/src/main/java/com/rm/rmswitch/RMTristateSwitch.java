@@ -125,8 +125,8 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     public int getSwitchStandardHeight() {
         return getResources().getDimensionPixelSize(
                 getSwitchDesign() != DESIGN_ANDROID ?
-                        R.dimen.rm_triswitch_standard_height :
-                        R.dimen.rm_triswitch_android_height);
+                        R.dimen.rm_switch_standard_height :
+                        R.dimen.rm_switch_android_height);
     }
 
     @Override

@@ -255,8 +255,8 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             if ((heightMode == MeasureSpec.UNSPECIFIED) ||
                     (heightMode == MeasureSpec.AT_MOST &&
                             standardHeight < MeasureSpec.getSize(heightMeasureSpec)))
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(standardHeight, MeasureSpec
-                        .EXACTLY);
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(standardHeight,
+                        MeasureSpec.EXACTLY);
         }
 
         // Fix the dimension depending on the aspect ratio forced or not
@@ -275,7 +275,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
                         MeasureSpec.getMode(heightMeasureSpec));
         }
 
-        setBkgMargins(heightMeasureSpec);
+        setBkgMargins(heightMeasureSpec, widthMeasureSpec);
 
         setToggleMargins(heightMeasureSpec);
 
@@ -284,13 +284,13 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    private void setBkgMargins(int heightMeasureSpec) {
+    private void setBkgMargins(int heightMeasureSpec, int widthMeasureSpec) {
         // If slim design add some margin to the background line, else remove them
         int calculatedBackgroundSideMargin = 0;
         int calculatedBackgroundTopBottomMargin = 0;
 
         if (mSwitchDesign == DESIGN_SLIM || mSwitchDesign == DESIGN_ANDROID) {
-            calculatedBackgroundSideMargin = MeasureSpec.getSize(heightMeasureSpec) / 6;
+            calculatedBackgroundSideMargin = MeasureSpec.getSize(widthMeasureSpec) / 6;
         }
 
         if (mSwitchDesign == DESIGN_ANDROID) {
@@ -322,9 +322,9 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         // Set the padding of the image
         int padding;
         if (mSwitchDesign == DESIGN_LARGE) {
-            padding = 0;
+            padding = mImgToggle.getHeight() / 10;
         } else {
-            padding = mImgToggle.getHeight() / 6;
+            padding = mImgToggle.getHeight() / 5;
         }
         mImgToggle.setPadding(padding, padding, padding, padding);
     }
@@ -473,7 +473,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
 
     protected abstract void changeToggleGravity();
 
-    public abstract void setupSwitchCustomAttributes(TypedArray a);
+    protected abstract void setupSwitchCustomAttributes(TypedArray a);
 
     @Override
     public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6,
