@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.rm.rmswitch.RMAbstractSwitch;
 import com.rm.rmswitch.RMSwitch;
 import com.rm.rmswitch.RMTristateSwitch;
 

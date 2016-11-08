@@ -165,7 +165,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         }
     }
 
-    public void setDesign(@SwitchDesign int switchDesign) {
+    public void setSwitchDesign(@SwitchDesign int switchDesign) {
         if (switchDesign != mSwitchDesign) {
             mSwitchDesign = switchDesign;
             setupLayout();
