@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         mTristateSwitch.setState(RMTristateSwitch.STATE_LEFT);
         mTristateSwitch.setForceAspectRatio(true);
         mTristateSwitch.setEnabled(true);
+        mTristateSwitch.setRightToLeft(false);
         mTristateSwitch.setSwitchDesign(RMTristateSwitch.DESIGN_LARGE);
         mTristateSwitch.setSwitchToggleLeftColor(Color.DKGRAY);
         mTristateSwitch.setSwitchToggleMiddleColor(Color.DKGRAY);
