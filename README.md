@@ -11,6 +11,14 @@ With the option to choose between two or three states. (from v1.1.0) <br /><br /
 [Changelog] (CHANGELOG.md)
 
 
+##### From version 1.2.0 you can choose between three switch design: <br />
+-"Slim" <br />
+-"Large" <br />
+-"Android" <br />
+
+<img src="switch_design_samples.png" title="design_sample" />
+
+
 Download
 ------
 ####Gradle:
