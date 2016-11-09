@@ -231,10 +231,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
 
         // If set to wrap content, apply standard dimensions
         if (widthMode != MeasureSpec.EXACTLY) {
-            int standardWith = (int) Utils
-                    .convertDpToPixel(
-                            getContext(),
-                            getSwitchStandardWidth());
+            int standardWith = getSwitchStandardWidth();
 
             // If unspecified or wrap_content where there's more space than the standard,
             // set the standard dimensions
@@ -245,10 +242,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         }
 
         if (heightMode != MeasureSpec.EXACTLY) {
-            int standardHeight = (int) Utils
-                    .convertDpToPixel(
-                            getContext(),
-                            getSwitchStandardHeight());
+            int standardHeight = getSwitchStandardHeight();
 
             // If unspecified or wrap_content where there's more space than the standard,
             // set the standard dimensions
