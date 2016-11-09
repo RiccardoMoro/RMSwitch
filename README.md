@@ -202,7 +202,7 @@ RMTristateSwitch
 |                               | setSwitchToggleMiddleDrawable(Drawable drawable)                  |                                                                                                                   |                                                                                               |
 | switchToggleRightImage    	| setSwitchToggleRightDrawableRes(@ColorInt int color)              | The toggle image of the Switch if in the right state                                                              | the same as the one of the other states toggle image if at least one set, none otherwise 	    |
 |                               | setSwitchToggleRightDrawable(Drawable drawable)                   |                                                                                                                   |                                                                                               |
-| slimDesign                    | setSwitchDesign(@SwitchDesign int switchDesign)                   | The switch design, one of the RMAbstractSwitch.DESIGN_*** constants, changes the appearance of the switch         | RMAbstractSwitch.DESIGN_LARGE                                                                 |
+| switchDesign                  | setSwitchDesign(@SwitchDesign int switchDesign)                   | The switch design, one of the RMAbstractSwitch.DESIGN_*** constants, changes the appearance of the switch         | RMAbstractSwitch.DESIGN_LARGE                                                                 |
 
 The changes between the Switch states will be automatically cross-faded, to obtain a smooth experience
 
