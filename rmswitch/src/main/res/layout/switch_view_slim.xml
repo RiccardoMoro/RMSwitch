@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rm_switch_view_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:id="@+id/rm_switch_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/rm_switch_view_bkg"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="@dimen/slim_design_height"
         android:layout_centerVertical="true"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"/>
 
     <com.rm.rmswitch.SquareImageView
         android:id="@+id/rm_switch_view_toggle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"/>
 </RelativeLayout>

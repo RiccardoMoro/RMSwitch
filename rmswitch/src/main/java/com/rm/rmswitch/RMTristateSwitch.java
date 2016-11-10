@@ -2,15 +2,15 @@ package com.rm.rmswitch;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
@@ -22,9 +22,6 @@ import java.util.List;
  */
 public class RMTristateSwitch extends RMAbstractSwitch {
     private static final String BUNDLE_KEY_STATE = "bundle_key_state";
-    private static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
-    private static final String BUNDLE_KEY_ENABLED = "bundle_key_enabled";
-    private static final String BUNDLE_KEY_FORCE_ASPECT_RATIO = "bundle_key_force_aspect_ratio";
     private static final String BUNDLE_KEY_RIGHT_TO_LEFT = "bundle_key_right_to_left";
     private static final String BUNDLE_KEY_BKG_LEFT_COLOR = "bundle_key_bkg_left_color";
     private static final String BUNDLE_KEY_BKG_MIDDLE_COLOR = "bundle_key_bkg_middle_color";
@@ -32,12 +29,12 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     private static final String BUNDLE_KEY_TOGGLE_LEFT_COLOR = "bundle_key_toggle_left_color";
     private static final String BUNDLE_KEY_TOGGLE_MIDDLE_COLOR = "bundle_key_toggle_middle_color";
     private static final String BUNDLE_KEY_TOGGLE_RIGHT_COLOR = "bundle_key_toggle_right_color";
-    private static final String BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE_RES =
-            "bundle_key_toggle_left_drawable_res";
-    private static final String BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE_RES =
-            "bundle_key_toggle_middle_drawable_res";
-    private static final String BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE_RES =
-            "bundle_key_toggle_right_drawable_res";
+    private static final String BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE =
+            "bundle_key_toggle_left_drawable";
+    private static final String BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE =
+            "bundle_key_toggle_middle_drawable";
+    private static final String BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE =
+            "bundle_key_toggle_right_drawable";
 
     private static final float SWITCH_STANDARD_ASPECT_RATIO = 2.6f;
 
@@ -86,19 +83,19 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     private int mToggleRightColor;
 
     /**
-     * The toggle drawable resource when on the left
+     * The toggle drawable when on the left
      */
-    private int mToggleLeftDrawableResource;
+    private Drawable mToggleLeftDrawable;
 
     /**
-     * The toggle drawable resource when in the middle
+     * The toggle drawable when in the middle
      */
-    private int mToggleMiddleDrawableResource;
+    private Drawable mToggleMiddleDrawable;
 
     /**
-     * The toggle drawable resource when on the right
+     * The toggle drawable when on the right
      */
-    private int mToggleRightDrawableResource;
+    private Drawable mToggleRightDrawable;
 
 
     public RMTristateSwitch(Context context) {
@@ -120,12 +117,18 @@ public class RMTristateSwitch extends RMAbstractSwitch {
 
     @Override
     public int getSwitchStandardWidth() {
-        return R.dimen.rm_triswitch_standard_width;
+        return getResources().getDimensionPixelSize(
+                getSwitchDesign() != DESIGN_ANDROID ?
+                        R.dimen.rm_triswitch_standard_width :
+                        R.dimen.rm_triswitch_android_width);
     }
 
     @Override
     public int getSwitchStandardHeight() {
-        return R.dimen.rm_triswitch_standard_height;
+        return getResources().getDimensionPixelSize(
+                getSwitchDesign() != DESIGN_ANDROID ?
+                        R.dimen.rm_switch_standard_height :
+                        R.dimen.rm_switch_android_height);
     }
 
     @Override
@@ -134,32 +137,30 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     }
 
     private void setMissingImages() {
-        if (mToggleLeftDrawableResource != 0)
-            setMissingImagesFromResource(mToggleLeftDrawableResource);
-        else if (mToggleMiddleDrawableResource != 0)
-            setMissingImagesFromResource(mToggleMiddleDrawableResource);
-        else if (mToggleRightDrawableResource != 0)
-            setMissingImagesFromResource(mToggleRightDrawableResource);
+        if (mToggleLeftDrawable != null)
+            setMissingImagesFromDrawable(mToggleLeftDrawable);
+        else if (mToggleMiddleDrawable != null)
+            setMissingImagesFromDrawable(mToggleMiddleDrawable);
+        else if (mToggleRightDrawable != null)
+            setMissingImagesFromDrawable(mToggleRightDrawable);
     }
 
     // Add the missing images
-    private void setMissingImagesFromResource(@DrawableRes int resource) {
-        if (mToggleLeftDrawableResource == 0)
-            mToggleLeftDrawableResource = resource;
-        if (mToggleMiddleDrawableResource == 0)
-            mToggleMiddleDrawableResource = resource;
-        if (mToggleRightDrawableResource == 0)
-            mToggleRightDrawableResource = resource;
+    private void setMissingImagesFromDrawable(Drawable resource) {
+        if (mToggleLeftDrawable == null)
+            mToggleLeftDrawable = resource;
+        if (mToggleMiddleDrawable == null)
+            mToggleMiddleDrawable = resource;
+        if (mToggleRightDrawable == null)
+            mToggleRightDrawable = resource;
     }
 
     @Override
     protected Parcelable onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(BUNDLE_KEY_SUPER_DATA, super.onSaveInstanceState());
+        Bundle bundle = (Bundle) super.onSaveInstanceState();
 
         bundle.putInt(BUNDLE_KEY_STATE, mCurrentState);
-        bundle.putBoolean(BUNDLE_KEY_ENABLED, mIsEnabled);
-        bundle.putBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, mForceAspectRatio);
+
         bundle.putBoolean(BUNDLE_KEY_RIGHT_TO_LEFT, mRightToLeft);
 
         bundle.putInt(BUNDLE_KEY_BKG_LEFT_COLOR, mBkgLeftColor);
@@ -170,23 +171,26 @@ public class RMTristateSwitch extends RMAbstractSwitch {
         bundle.putInt(BUNDLE_KEY_TOGGLE_MIDDLE_COLOR, mToggleMiddleColor);
         bundle.putInt(BUNDLE_KEY_TOGGLE_RIGHT_COLOR, mToggleRightColor);
 
-        bundle.putInt(BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE_RES, mToggleLeftDrawableResource);
-        bundle.putInt(BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE_RES, mToggleMiddleDrawableResource);
-        bundle.putInt(BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE_RES, mToggleRightDrawableResource);
+        bundle.putParcelable(BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE, mToggleLeftDrawable != null ?
+                ((BitmapDrawable) mToggleLeftDrawable).getBitmap() :
+                null);
+        bundle.putParcelable(BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE, mToggleMiddleDrawable != null ?
+                ((BitmapDrawable) mToggleMiddleDrawable).getBitmap() :
+                null);
+        bundle.putParcelable(BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE, mToggleRightDrawable != null ?
+                ((BitmapDrawable) mToggleRightDrawable).getBitmap() :
+                null);
 
         return bundle;
     }
 
+    @SuppressWarnings("WrongConstant")
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
         Bundle prevState = (Bundle) state;
 
-        super.onRestoreInstanceState(prevState.getParcelable(BUNDLE_KEY_SUPER_DATA));
-
         // Restore the switch state notifying the observers
-        mIsEnabled = prevState.getBoolean(BUNDLE_KEY_ENABLED, true);
-        mForceAspectRatio = prevState.getBoolean(BUNDLE_KEY_FORCE_ASPECT_RATIO, true);
-
         mBkgLeftColor = prevState.getInt(BUNDLE_KEY_BKG_LEFT_COLOR,
                 Utils.getDefaultBackgroundColor(getContext()));
         mBkgMiddleColor = prevState.getInt(BUNDLE_KEY_BKG_MIDDLE_COLOR,
@@ -201,12 +205,12 @@ public class RMTristateSwitch extends RMAbstractSwitch {
         mToggleRightColor = prevState.getInt(BUNDLE_KEY_TOGGLE_RIGHT_COLOR,
                 Utils.getAccentColor(getContext()));
 
-        mToggleLeftDrawableResource = prevState
-                .getInt(BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE_RES, 0);
-        mToggleMiddleDrawableResource = prevState
-                .getInt(BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE_RES, 0);
-        mToggleRightDrawableResource = prevState
-                .getInt(BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE_RES, 0);
+        mToggleLeftDrawable = new BitmapDrawable(getResources(),
+                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE));
+        mToggleMiddleDrawable = new BitmapDrawable(getResources(),
+                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE));
+        mToggleRightDrawable = new BitmapDrawable(getResources(),
+                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE));
 
         // Add all the missing images
         setMissingImages();
@@ -253,19 +257,34 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     }
 
     public void setSwitchToggleLeftDrawableRes(@DrawableRes int drawable) {
-        mToggleLeftDrawableResource = drawable;
-        setMissingImages();
-        setupSwitchAppearance();
+        setSwitchToggleLeftDrawable(drawable != 0 ?
+                ContextCompat.getDrawable(getContext(), drawable) : null);
     }
 
     public void setSwitchToggleMiddleDrawableRes(@DrawableRes int drawable) {
-        mToggleMiddleDrawableResource = drawable;
+        setSwitchToggleMiddleDrawable(drawable != 0 ?
+                ContextCompat.getDrawable(getContext(), drawable) : null);
+    }
+
+    public void setSwitchToggleRightDrawableRes(@DrawableRes int drawable) {
+        setSwitchToggleRightDrawable(drawable != 0 ?
+                ContextCompat.getDrawable(getContext(), drawable) : null);
+    }
+
+    public void setSwitchToggleLeftDrawable(Drawable drawable) {
+        mToggleLeftDrawable = drawable;
         setMissingImages();
         setupSwitchAppearance();
     }
 
-    public void setSwitchToggleRightDrawableRes(@DrawableRes int drawable) {
-        mToggleRightDrawableResource = drawable;
+    public void setSwitchToggleMiddleDrawable(Drawable drawable) {
+        mToggleMiddleDrawable = drawable;
+        setMissingImages();
+        setupSwitchAppearance();
+    }
+
+    public void setSwitchToggleRightDrawable(Drawable drawable) {
+        mToggleRightDrawable = drawable;
         setMissingImages();
         setupSwitchAppearance();
     }
@@ -306,79 +325,52 @@ public class RMTristateSwitch extends RMAbstractSwitch {
         return mToggleRightColor;
     }
 
-    @DrawableRes
-    public int getSwitchToggleLeftDrawableRes() {
-        return mToggleLeftDrawableResource;
+    public Drawable getSwitchToggleLeftDrawable() {
+        return mToggleLeftDrawable;
     }
 
-    @DrawableRes
-    public int getSwitchToggleMiddleDrawableRes() {
-        return mToggleMiddleDrawableResource;
+    public Drawable getSwitchToggleMiddleDrawableRes() {
+        return mToggleMiddleDrawable;
     }
 
-    @DrawableRes
-    public int getSwitchToggleRightDrawableRes() {
-        return mToggleRightDrawableResource;
+    public Drawable getSwitchToggleRightDrawableRes() {
+        return mToggleRightDrawable;
     }
 
-    @ColorInt
-    public int getSwitchCurrentBkgColor() {
-        return getSwitchBkgColorForState(mCurrentState);
+    @Override
+    public Drawable getSwitchCurrentToggleDrawable() {
+        return mCurrentState == STATE_LEFT ?
+                mToggleLeftDrawable :
+                mCurrentState == STATE_MIDDLE ?
+                        mToggleMiddleDrawable :
+                        mToggleRightDrawable;
     }
 
-    @ColorInt
-    public int getSwitchToggleCurrentColor() {
-        return getSwitchToggleColorForState(mCurrentState);
+    @Override
+    public Drawable getSwitchCurrentToggleBkgDrawable() {
+        Drawable toggleBkgDrawable = ContextCompat.getDrawable(getContext(),
+                R.drawable.rounded_border_bkg);
+        ((GradientDrawable) toggleBkgDrawable).setColor(mCurrentState == STATE_LEFT ?
+                mToggleLeftColor :
+                mCurrentState == STATE_MIDDLE ?
+                        mToggleMiddleColor :
+                        mToggleRightColor);
+
+        return toggleBkgDrawable;
     }
 
-    @DrawableRes
-    public int getSwitchToggleCurrentDrawableResource() {
-        return getSwitchToggleDrawableResourceForState(mCurrentState);
-    }
+    @Override
+    public Drawable getSwitchCurrentBkgDrawable() {
+        Drawable bkgDrawable = ContextCompat.getDrawable(getContext(),
+                R.drawable.rounded_border_bkg);
+        ((GradientDrawable) bkgDrawable).setColor(mCurrentState == STATE_LEFT ?
+                mBkgLeftColor :
+                mCurrentState == STATE_MIDDLE ?
+                        mBkgMiddleColor :
+                        mBkgRightColor);
 
-    @ColorInt
-    public int getSwitchBkgColorForState(@State int state) {
-        return
-                state == STATE_LEFT ?
-                        mBkgLeftColor :
-                        state == STATE_MIDDLE ?
-                                mBkgMiddleColor :
-                                mBkgRightColor;
+        return bkgDrawable;
     }
-
-    @ColorInt
-    public int getSwitchToggleColorForState(@State int state) {
-        return
-                state == STATE_LEFT ?
-                        mToggleLeftColor :
-                        state == STATE_MIDDLE ?
-                                mToggleMiddleColor :
-                                mToggleRightColor;
-    }
-
-    @DrawableRes
-    public int getSwitchToggleDrawableResourceForState(@State int state) {
-        return
-                state == STATE_LEFT ?
-                        mToggleLeftDrawableResource :
-                        state == STATE_MIDDLE ?
-                                mToggleMiddleDrawableResource :
-                                mToggleRightDrawableResource;
-    }
-
-    @Nullable
-    public Drawable getSwitchToggleCurrentDrawable() {
-        try {
-            int currentDrawableResource = getSwitchToggleCurrentDrawableResource();
-            return
-                    currentDrawableResource == 0 ?
-                            null :
-                            ContextCompat.getDrawable(getContext(), currentDrawableResource);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
 
     /**
      * Adds an observer to the list {@link #mObservers}
@@ -416,7 +408,7 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     private void notifyObservers() {
         if (mObservers != null) {
             for (RMTristateSwitchObserver observer : mObservers) {
-                observer.onCheckStateChange(mCurrentState);
+                observer.onCheckStateChange(this, mCurrentState);
             }
         }
     }
@@ -427,87 +419,6 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     public void removeSwitchObservers() {
         if (mObservers != null && mObservers.size() > 0)
             mObservers.clear();
-    }
-
-    /**
-     * Setup all the switch custom attributes appearance
-     */
-    @Override
-    public void setupSwitchAppearance() {
-        // Create the background drawables
-        Drawable bkgDrawable =
-                ContextCompat.getDrawable(getContext(), R.drawable.rounded_border_bkg);
-        ((GradientDrawable) bkgDrawable).setColor(getSwitchCurrentBkgColor());
-
-        // Create the toggle drawables
-        Drawable toggleDrawable = getSwitchToggleCurrentDrawable();
-
-
-        // Create the toggle background drawables
-        Drawable toggleBkgDrawable =
-                ContextCompat.getDrawable(getContext(), R.drawable.rounded_border_bkg);
-        ((GradientDrawable) toggleBkgDrawable).setColor(getSwitchToggleCurrentColor());
-
-        // Set the background drawable
-        if (mImgBkg.getDrawable() != null) {
-            // Create the transition for the background
-            TransitionDrawable bkgTransitionDrawable = new TransitionDrawable(new Drawable[]{
-                    // If it was a transition drawable, take the last one of it's drawables
-                    mImgBkg.getDrawable() instanceof TransitionDrawable ?
-                            ((TransitionDrawable) mImgBkg.getDrawable()).getDrawable(1) :
-                            mImgBkg.getDrawable(),
-                    bkgDrawable
-            });
-            bkgTransitionDrawable.setCrossFadeEnabled(true);
-            // Set the transitionDrawable and start the animation
-            mImgBkg.setImageDrawable(bkgTransitionDrawable);
-            bkgTransitionDrawable.startTransition(ANIMATION_DURATION);
-        } else {
-            // No previous background image, just set the new one
-            mImgBkg.setImageDrawable(bkgDrawable);
-        }
-
-        // Set the toggle background
-        if (mImgToggle.getBackground() != null) {
-            // Create the transition for the background of the toggle
-            TransitionDrawable toggleBkgTransitionDrawable =
-                    new TransitionDrawable(new Drawable[]{
-                            // If it was a transition drawable, take the last one of it's drawables
-                            mImgToggle.getBackground() instanceof TransitionDrawable ?
-                                    ((TransitionDrawable) mImgToggle.getBackground()).getDrawable
-                                            (1) :
-                                    mImgToggle.getBackground(),
-                            toggleBkgDrawable
-                    });
-            toggleBkgTransitionDrawable.setCrossFadeEnabled(true);
-            // Set the transitionDrawable and start the animation
-            mImgToggle.setBackground(toggleBkgTransitionDrawable);
-            toggleBkgTransitionDrawable.startTransition(ANIMATION_DURATION);
-        } else {
-            // No previous background image, just set the new one
-            mImgToggle.setImageDrawable(toggleBkgDrawable);
-        }
-
-        // Set the toggle image
-        if (mImgToggle.getDrawable() != null) {
-            // Create the transition for the image of the toggle
-            TransitionDrawable toggleTransitionDrawable = new TransitionDrawable(new Drawable[]{
-                    // If it was a transition drawable, take the last one of it's drawables
-                    mImgToggle.getDrawable() instanceof TransitionDrawable ?
-                            ((TransitionDrawable) mImgToggle.getDrawable()).getDrawable(1) :
-                            mImgToggle.getDrawable(),
-                    toggleDrawable
-            });
-            toggleTransitionDrawable.setCrossFadeEnabled(true);
-            // Set the transitionDrawable and start the animation
-            mImgToggle.setImageDrawable(toggleTransitionDrawable);
-            toggleTransitionDrawable.startTransition(ANIMATION_DURATION);
-        } else {
-            // No previous toggle image, just set the new one
-            mImgToggle.setImageDrawable(toggleDrawable);
-        }
-
-        setAlpha(mIsEnabled ? 1f : 0.6f);
     }
 
     @Override
@@ -559,14 +470,35 @@ public class RMTristateSwitch extends RMAbstractSwitch {
 
 
         // Get the toggle images when left, middle or right
-        mToggleLeftDrawableResource = typedArray.getResourceId(
+        int toggleLeftDrawableResource = typedArray.getResourceId(
                 R.styleable.RMTristateSwitch_switchToggleLeftImage, 0);
-        mToggleMiddleDrawableResource = typedArray.getResourceId(
+        int toggleMiddleDrawableResource = typedArray.getResourceId(
                 R.styleable.RMTristateSwitch_switchToggleMiddleImage,
-                mToggleLeftDrawableResource);
-        mToggleRightDrawableResource = typedArray.getResourceId(
+                toggleLeftDrawableResource);
+        int toggleRightDrawableResource = typedArray.getResourceId(
                 R.styleable.RMTristateSwitch_switchToggleRightImage,
-                mToggleLeftDrawableResource);
+                toggleLeftDrawableResource);
+
+        if (toggleLeftDrawableResource != 0) {
+            mToggleLeftDrawable = ContextCompat
+                    .getDrawable(getContext(), toggleLeftDrawableResource);
+        } else {
+            mToggleLeftDrawable = null;
+        }
+
+        if (toggleMiddleDrawableResource != 0) {
+            mToggleMiddleDrawable = ContextCompat
+                    .getDrawable(getContext(), toggleMiddleDrawableResource);
+        } else {
+            mToggleMiddleDrawable = null;
+        }
+
+        if (toggleRightDrawableResource != 0) {
+            mToggleRightDrawable = ContextCompat
+                    .getDrawable(getContext(), toggleRightDrawableResource);
+        } else {
+            mToggleRightDrawable = null;
+        }
 
         // If at least one image is set, add all the missing ones
         setMissingImages();
@@ -675,6 +607,6 @@ public class RMTristateSwitch extends RMAbstractSwitch {
 
     // Public interface to watch the switch state changes
     public interface RMTristateSwitchObserver {
-        void onCheckStateChange(@State int state);
+        void onCheckStateChange(RMTristateSwitch switchView, @State int state);
     }
 }
