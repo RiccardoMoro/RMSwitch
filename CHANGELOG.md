@@ -24,7 +24,7 @@ Changelog
 -Added the "slim design" option to make the switch looks similar to the default android one <br />
 
 #### New from v1.2.0: <br />
-(WIP) <br />
+(10/11/2016) <br />
 -** Breaking change: no more boolean for slim design, instead, now you can choose between styles with the RMAbstractSwitch.DESIGN_*** constants and the RMSwitch.setSwitchDesign(int switchDesign) method <br />
 -** Breaking change: now RMSwitchObserver and RMTristateSwitchObserver returns the instance of the clicked RMSwitch/RMTristateSwitch with the current selection value <br />
 -** Breaking change: now RMSwitch.getSwitchToggleCheckedDrawable(), RMTristateSwitch.getSwitchToggleLeftDrawable() etc returns a drawable and not a drawable resource int <br />
