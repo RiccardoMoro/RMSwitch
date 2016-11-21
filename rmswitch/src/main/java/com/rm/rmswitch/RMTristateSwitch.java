@@ -2,9 +2,7 @@ package com.rm.rmswitch;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -171,16 +169,6 @@ public class RMTristateSwitch extends RMAbstractSwitch {
         bundle.putInt(BUNDLE_KEY_TOGGLE_MIDDLE_COLOR, mToggleMiddleColor);
         bundle.putInt(BUNDLE_KEY_TOGGLE_RIGHT_COLOR, mToggleRightColor);
 
-        bundle.putParcelable(BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE, mToggleLeftDrawable != null ?
-                ((BitmapDrawable) mToggleLeftDrawable).getBitmap() :
-                null);
-        bundle.putParcelable(BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE, mToggleMiddleDrawable != null ?
-                ((BitmapDrawable) mToggleMiddleDrawable).getBitmap() :
-                null);
-        bundle.putParcelable(BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE, mToggleRightDrawable != null ?
-                ((BitmapDrawable) mToggleRightDrawable).getBitmap() :
-                null);
-
         return bundle;
     }
 
@@ -204,13 +192,6 @@ public class RMTristateSwitch extends RMAbstractSwitch {
                 Utils.getPrimaryColor(getContext()));
         mToggleRightColor = prevState.getInt(BUNDLE_KEY_TOGGLE_RIGHT_COLOR,
                 Utils.getAccentColor(getContext()));
-
-        mToggleLeftDrawable = new BitmapDrawable(getResources(),
-                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE));
-        mToggleMiddleDrawable = new BitmapDrawable(getResources(),
-                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE));
-        mToggleRightDrawable = new BitmapDrawable(getResources(),
-                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE));
 
         // Add all the missing images
         setMissingImages();

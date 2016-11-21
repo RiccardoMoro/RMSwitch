@@ -12,6 +12,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.StyleableRes;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Checkable;
@@ -27,6 +28,8 @@ import java.lang.annotation.RetentionPolicy;
 @SuppressWarnings("ResourceType")
 public abstract class RMAbstractSwitch extends RelativeLayout
         implements Checkable, View.OnClickListener, TristateCheckable, View.OnLayoutChangeListener {
+
+    protected String TAG = getClass().getSimpleName();
 
     protected static final String BUNDLE_KEY_SUPER_DATA = "bundle_key_super_data";
     protected static final String BUNDLE_KEY_ENABLED = "bundle_key_enabled";
@@ -124,6 +127,9 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             typedArray.recycle();
         }
 
+        // Used to calculate margins and padding after layout changes
+        addOnLayoutChangeListener(this);
+
         // Set the OnClickListener
         setOnClickListener(this);
     }
@@ -170,10 +176,10 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             mSwitchDesign = switchDesign;
             setupLayout();
             setupSwitchAppearance();
-
-            // Used to calculate margins and padding after layout changes
-            addOnLayoutChangeListener(this);
         }
+
+        // Used to calculate margins and padding after layout changes
+        addOnLayoutChangeListener(this);
     }
 
     // Getters
@@ -297,6 +303,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     }
 
     private void setToggleMargins(int heightMeasureSpec) {
+        Log.e(TAG, "Margins");
         // Set the margin after all measures have been done
         int calculatedToggleMargin;
         if (mSwitchDesign == DESIGN_LARGE) {
@@ -313,6 +320,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     }
 
     private void setToggleImagePadding() {
+        Log.e(TAG, "Paddings");
         // Set the padding of the image
         int padding;
         if (mSwitchDesign == DESIGN_LARGE) {

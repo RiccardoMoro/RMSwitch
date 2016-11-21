@@ -34,3 +34,9 @@ Changelog
 -Lot of code improvements <br />
 -Updated CHANGELOG <br />
 -Updated README <br />
+
+
+#### New from v1.2.1: <br />
+(21/11/2016) <br />
+-Fix a crash due to too much data inside save state parcel <br />
+-Fix first time not rendering padding inside toggle image correctly

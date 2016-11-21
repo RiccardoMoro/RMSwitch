@@ -99,15 +99,6 @@ public class RMSwitch extends RMAbstractSwitch {
         bundle.putInt(BUNDLE_KEY_TOGGLE_CHECKED_COLOR, mToggleCheckedColor);
         bundle.putInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR, mToggleNotCheckedColor);
 
-        bundle.putParcelable(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE,
-                mToggleCheckedDrawable != null ?
-                        ((BitmapDrawable) mToggleCheckedDrawable).getBitmap() :
-                        null);
-        bundle.putParcelable(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE,
-                mToggleNotCheckedDrawable != null ?
-                        ((BitmapDrawable) mToggleNotCheckedDrawable).getBitmap() :
-                        null);
-
         return bundle;
     }
 
@@ -127,11 +118,6 @@ public class RMSwitch extends RMAbstractSwitch {
                 Utils.getAccentColor(getContext()));
         mToggleNotCheckedColor = prevState.getInt(BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR,
                 Color.WHITE);
-
-        mToggleCheckedDrawable = new BitmapDrawable(getResources(),
-                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE));
-        mToggleNotCheckedDrawable = new BitmapDrawable(getResources(),
-                (Bitmap) prevState.getParcelable(BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE));
 
         setChecked(prevState.getBoolean(BUNDLE_KEY_CHECKED, false));
         notifyObservers();
