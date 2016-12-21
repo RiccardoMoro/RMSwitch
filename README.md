@@ -26,6 +26,10 @@ Download
 compile 'com.rm:rmswitch:1.2.2'
 ```
 
+<br />
+<b>Min API level: 16 (Android 4.1) </b>
+<br />
+
 ## Usage
 
 To use them, just add this to your layout file
