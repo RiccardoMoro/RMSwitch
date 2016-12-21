@@ -39,4 +39,9 @@ Changelog
 #### New from v1.2.1: <br />
 (21/11/2016) <br />
 -Fix a crash due to too much data inside save state parcel <br />
--Fix first time not rendering padding inside toggle image correctly
+-Fix first time not rendering padding inside toggle image correctly <br />
+
+#### New from v1.2.2 <br />
+(20/12/2016) <br />
+-Removed log for margin and padding measurement <br />
+-Updated gradle compiler and SDK tools version

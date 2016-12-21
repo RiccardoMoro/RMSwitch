@@ -303,7 +303,6 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     }
 
     private void setToggleMargins(int heightMeasureSpec) {
-        Log.e(TAG, "Margins");
         // Set the margin after all measures have been done
         int calculatedToggleMargin;
         if (mSwitchDesign == DESIGN_LARGE) {
@@ -320,7 +319,6 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     }
 
     private void setToggleImagePadding() {
-        Log.e(TAG, "Paddings");
         // Set the padding of the image
         int padding;
         if (mSwitchDesign == DESIGN_LARGE) {
