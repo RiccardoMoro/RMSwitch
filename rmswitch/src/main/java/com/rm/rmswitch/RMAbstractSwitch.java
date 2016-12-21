@@ -12,7 +12,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.StyleableRes;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Checkable;
@@ -206,10 +205,12 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         if (sLayoutTransition == null) {
             sLayoutTransition = new LayoutTransition();
             sLayoutTransition.setDuration(ANIMATION_DURATION);
-            sLayoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-            sLayoutTransition.setInterpolator(
-                    LayoutTransition.CHANGING,
-                    new FastOutLinearInInterpolator());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                sLayoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+                sLayoutTransition.setInterpolator(
+                        LayoutTransition.CHANGING,
+                        new FastOutLinearInInterpolator());
+            }
         }
 
         ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
@@ -398,7 +399,11 @@ public abstract class RMAbstractSwitch extends RelativeLayout
                     });
             toggleBkgTransitionDrawable.setCrossFadeEnabled(true);
             // Set the transitionDrawable and start the animation
-            mImgToggle.setBackground(toggleBkgTransitionDrawable);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mImgToggle.setBackground(toggleBkgTransitionDrawable);
+            } else {
+                mImgToggle.setBackgroundDrawable(toggleBkgTransitionDrawable);
+            }
             toggleBkgTransitionDrawable.startTransition(ANIMATION_DURATION);
         } else {
             // No previous background image, just set the new one

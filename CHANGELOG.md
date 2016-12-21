@@ -44,4 +44,8 @@ Changelog
 #### New from v1.2.2 <br />
 (20/12/2016) <br />
 -Removed log for margin and padding measurement <br />
--Updated gradle compiler and SDK tools version
+-Updated gradle compiler and SDK tools version <br />
+
+#### New from v1.3.0 <br />
+(WIP) <br />
+-Now the min SDK version is 11 instead of 16

@@ -23,11 +23,11 @@ Download
 ------
 ####Gradle:
 ```groovy
-compile 'com.rm:rmswitch:1.2.2'
+compile 'com.rm:rmswitch:1.3.0'
 ```
 
 <br />
-<b>Min API level: 16 (Android 4.1) </b>
+<b>Min SDK version: 11 (Android 3.0) </b>
 <br />
 
 ## Usage
@@ -209,6 +209,15 @@ RMTristateSwitch
 | switchDesign                  | setSwitchDesign(@SwitchDesign int switchDesign)                   | The switch design, one of the RMAbstractSwitch.DESIGN_*** constants, changes the appearance of the switch         | RMAbstractSwitch.DESIGN_LARGE                                                                 |
 
 The changes between the Switch states will be automatically cross-faded, to obtain a smooth experience
+
+
+<br />
+
+####Limitations and TODO
+<br />
+* On devices with API version < 16 the toggle changes will not be animated <br />
+
+<br />
 
 License
 --------
