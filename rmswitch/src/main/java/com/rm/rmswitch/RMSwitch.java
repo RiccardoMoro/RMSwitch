@@ -26,10 +26,6 @@ public class RMSwitch extends RMAbstractSwitch {
     private static final String BUNDLE_KEY_TOGGLE_CHECKED_COLOR = "bundle_key_toggle_checked_color";
     private static final String BUNDLE_KEY_TOGGLE_NOT_CHECKED_COLOR =
             "bundle_key_toggle_not_checked_color";
-    private static final String BUNDLE_KEY_TOGGLE_CHECKED_DRAWABLE =
-            "bundle_key_toggle_checked_drawable";
-    private static final String BUNDLE_KEY_TOGGLE_NOT_CHECKED_DRAWABLE =
-            "bundle_key_toggle_not_checked_drawable";
 
     private static final float SWITCH_STANDARD_ASPECT_RATIO = 2.2f;
 
@@ -245,18 +241,11 @@ public class RMSwitch extends RMAbstractSwitch {
 
     @Override
     public void setupSwitchCustomAttributes(TypedArray typedArray) {
+        super.setupSwitchCustomAttributes(typedArray);
+
         // Get the checked flag
         mIsChecked = typedArray.getBoolean(
                 R.styleable.RMSwitch_checked, false);
-
-        // Keep aspect ratio flag
-        mForceAspectRatio = typedArray.getBoolean(
-                R.styleable.RMSwitch_forceAspectRatio, true);
-
-        // If the switch is enabled
-        mIsEnabled = typedArray.getBoolean(
-                R.styleable.RMSwitch_enabled, true);
-
 
         //Get the background checked and not checked color
         mBkgCheckedColor = typedArray.getColor(

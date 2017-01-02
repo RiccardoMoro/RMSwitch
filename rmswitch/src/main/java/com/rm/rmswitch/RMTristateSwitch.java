@@ -27,12 +27,6 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     private static final String BUNDLE_KEY_TOGGLE_LEFT_COLOR = "bundle_key_toggle_left_color";
     private static final String BUNDLE_KEY_TOGGLE_MIDDLE_COLOR = "bundle_key_toggle_middle_color";
     private static final String BUNDLE_KEY_TOGGLE_RIGHT_COLOR = "bundle_key_toggle_right_color";
-    private static final String BUNDLE_KEY_TOGGLE_LEFT_DRAWABLE =
-            "bundle_key_toggle_left_drawable";
-    private static final String BUNDLE_KEY_TOGGLE_MIDDLE_DRAWABLE =
-            "bundle_key_toggle_middle_drawable";
-    private static final String BUNDLE_KEY_TOGGLE_RIGHT_DRAWABLE =
-            "bundle_key_toggle_right_drawable";
 
     private static final float SWITCH_STANDARD_ASPECT_RATIO = 2.6f;
 
@@ -404,18 +398,12 @@ public class RMTristateSwitch extends RMAbstractSwitch {
 
     @Override
     public void setupSwitchCustomAttributes(TypedArray typedArray) {
+        super.setupSwitchCustomAttributes(typedArray);
+
         // Get the state
         //noinspection WrongConstant
         mCurrentState = typedArray.getInt(
                 R.styleable.RMTristateSwitch_state, STATE_LEFT);
-
-        // Keep aspect ratio flag
-        mForceAspectRatio = typedArray.getBoolean(
-                R.styleable.RMTristateSwitch_forceAspectRatio, true);
-
-        // If the switch is enabled
-        mIsEnabled = typedArray.getBoolean(
-                R.styleable.RMTristateSwitch_enabled, true);
 
         // The direction of the selection
         mRightToLeft = typedArray.getBoolean(

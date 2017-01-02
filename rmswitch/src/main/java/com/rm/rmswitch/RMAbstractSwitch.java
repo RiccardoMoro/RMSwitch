@@ -8,6 +8,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.CallSuper;
 import android.support.annotation.IntDef;
 import android.support.annotation.StyleableRes;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
@@ -90,7 +91,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
      */
     protected RelativeLayout mContainerLayout;
 
-    protected static LayoutTransition sLayoutTransition;
+    protected LayoutTransition sLayoutTransition;
 
     protected static final int ANIMATION_DURATION = 150;
 
@@ -461,6 +462,17 @@ public abstract class RMAbstractSwitch extends RelativeLayout
             toggle();
     }
 
+    @CallSuper
+    protected void setupSwitchCustomAttributes(TypedArray a) {
+        // Keep aspect ratio flag
+        mForceAspectRatio = a.getBoolean(
+                R.styleable.RMTristateSwitch_forceAspectRatio, true);
+
+        // If the switch is enabled
+        mIsEnabled = a.getBoolean(
+                R.styleable.RMTristateSwitch_enabled, true);
+    }
+
     public abstract float getSwitchAspectRatio();
 
     public abstract int getSwitchStandardWidth();
@@ -477,8 +489,6 @@ public abstract class RMAbstractSwitch extends RelativeLayout
     public abstract int[] getTypedArrayResource();
 
     protected abstract void changeToggleGravity();
-
-    protected abstract void setupSwitchCustomAttributes(TypedArray a);
 
     @Override
     public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6,
