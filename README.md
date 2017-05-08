@@ -7,7 +7,7 @@ A simple View that works like a switch, but with more customizations. <br />
 With the option to choose between two or three states. (from v1.1.0) <br /><br />
 
 
-#####** If you're upgrading from a version < 1.2.0, check the changelog of the 1.2.0 version, there are breaking changes! <br />
+##### ** If you're upgrading from a version < 1.2.0, check the changelog of the 1.2.0 version, there are breaking changes! <br />
 [Changelog] (CHANGELOG.md)
 
 
@@ -21,7 +21,7 @@ With the option to choose between two or three states. (from v1.1.0) <br /><br /
 
 Download
 ------
-####Gradle:
+#### Gradle:
 ```groovy
 compile 'com.rm:rmswitch:1.2.2'
 ```
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-####Supported Attributes
+#### Supported Attributes
 RMSwitch
 ------
 | XML Attribute                 | Java method                                                     	| Description                                                                                                     	| Default value                                      	                                        |
@@ -213,7 +213,7 @@ The changes between the Switch states will be automatically cross-faded, to obta
 License
 --------
 
-    Copyright 2016 Riccardo Moro.
+    Copyright 2017 Riccardo Moro.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
