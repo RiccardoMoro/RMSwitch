@@ -92,7 +92,7 @@ public abstract class RMAbstractSwitch extends RelativeLayout
      */
     protected RelativeLayout mContainerLayout;
 
-    protected static LayoutTransition sLayoutTransition;
+    protected LayoutTransition mLayoutTransition;
 
     protected static final int ANIMATION_DURATION = 150;
 
@@ -121,6 +121,14 @@ public abstract class RMAbstractSwitch extends RelativeLayout
                 getTypedArrayResource(),
                 defStyleAttr,
                 defStyleRes
+        );
+
+        mLayoutTransition = new LayoutTransition();
+        mLayoutTransition.setDuration(ANIMATION_DURATION);
+        mLayoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+        mLayoutTransition.setInterpolator(
+                LayoutTransition.CHANGING,
+                new FastOutLinearInInterpolator()
         );
 
         // Check the switch style
@@ -213,16 +221,6 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         // Inflate the stock switch view
         removeAllViews();
 
-        // Create the layout transition if not already created
-        if (sLayoutTransition == null) {
-            sLayoutTransition = new LayoutTransition();
-            sLayoutTransition.setDuration(ANIMATION_DURATION);
-            sLayoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-            sLayoutTransition.setInterpolator(
-                    LayoutTransition.CHANGING,
-                    new FastOutLinearInInterpolator());
-        }
-
         ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(mSwitchDesign == DESIGN_SLIM ?
                                 R.layout.switch_view_slim :
@@ -230,13 +228,13 @@ public abstract class RMAbstractSwitch extends RelativeLayout
                         this, true);
 
         // Get the sub-views
-        mImgToggle = (SquareImageView) findViewById(R.id.rm_switch_view_toggle);
-        mImgBkg = (ImageView) findViewById(R.id.rm_switch_view_bkg);
-        mContainerLayout = (RelativeLayout) findViewById(R.id.rm_switch_view_container);
+        mImgToggle = findViewById(R.id.rm_switch_view_toggle);
+        mImgBkg = findViewById(R.id.rm_switch_view_bkg);
+        mContainerLayout = findViewById(R.id.rm_switch_view_container);
 
         // Activate AnimateLayoutChanges in both the container and the root layout
-        setLayoutTransition(sLayoutTransition);
-        mContainerLayout.setLayoutTransition(sLayoutTransition);
+        setLayoutTransition(mLayoutTransition);
+        mContainerLayout.setLayoutTransition(mLayoutTransition);
     }
 
     @Override
