@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/RiccardoMoro/RMSwitch'
     gitUrl = 'https://github.com/RiccardoMoro/RMSwitch.git'
 
-    libraryVersion = '1.2.2'
+    libraryVersion = '1.2.3'
 
     developerId = 'RiccardoMoro'
     developerName = 'Riccardo Moro'
@@ -31,8 +31,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 2
-        versionName "1.2.2"
+        versionCode 3
+        versionName "1.2.3"
     }
     buildTypes {
         release {
