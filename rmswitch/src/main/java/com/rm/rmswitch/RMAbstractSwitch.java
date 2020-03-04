@@ -8,11 +8,12 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
-import android.support.annotation.StyleableRes;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import androidx.annotation.IntDef;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StyleRes;
+import androidx.annotation.StyleableRes;
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Checkable;
@@ -103,20 +104,30 @@ public abstract class RMAbstractSwitch extends RelativeLayout
         this(context, attrs, 0);
     }
 
-    @SuppressWarnings("WrongConstant")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public RMAbstractSwitch(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init(context, attrs, defStyleAttr, defStyleRes);
+    }
+
     public RMAbstractSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context, attrs, defStyleAttr, 0);
+    }
 
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(
                 attrs,
                 getTypedArrayResource(),
-                defStyleAttr, 0);
+                defStyleAttr,
+                defStyleRes
+        );
 
         // Check the switch style
-        mSwitchDesign = typedArray.getInt(R.styleable.RMSwitch_switchDesign, DESIGN_LARGE);
+        mSwitchDesign = typedArray.getInt(getSwitchDesignStyleable(), DESIGN_LARGE);
         if (mSwitchDesign == DESIGN_LARGE) {
             mSwitchDesign = typedArray
-                    .getInt(R.styleable.RMTristateSwitch_switchDesign, DESIGN_LARGE);
+                    .getInt(getSwitchDesignStyleable(), DESIGN_LARGE);
         }
 
         setupLayout();
@@ -470,6 +481,9 @@ public abstract class RMAbstractSwitch extends RelativeLayout
 
     @StyleableRes
     public abstract int[] getTypedArrayResource();
+
+    @StyleRes
+    public abstract int getSwitchDesignStyleable();
 
     protected abstract void changeToggleGravity();
 

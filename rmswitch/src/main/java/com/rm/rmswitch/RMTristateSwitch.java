@@ -5,11 +5,13 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
@@ -108,6 +110,11 @@ public class RMTristateSwitch extends RMAbstractSwitch {
         super(context, attrs, defStyleAttr);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public RMTristateSwitch(Context context, AttributeSet attrs, int defStyleAttr, int defTypeRes) {
+        super(context, attrs, defStyleAttr, defTypeRes);
+    }
+
     @Override
     public float getSwitchAspectRatio() {
         return SWITCH_STANDARD_ASPECT_RATIO;
@@ -132,6 +139,11 @@ public class RMTristateSwitch extends RMAbstractSwitch {
     @Override
     public int[] getTypedArrayResource() {
         return R.styleable.RMTristateSwitch;
+    }
+
+    @Override
+    public int getSwitchDesignStyleable() {
+        return R.styleable.RMTristateSwitch_switchDesign;
     }
 
     private void setMissingImages() {

@@ -1,10 +1,9 @@
 package com.rm.switchsample;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rm.rmswitch.RMSwitch;
 import com.rm.rmswitch.RMTristateSwitch;
@@ -62,39 +61,39 @@ public class ActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRMTristateSwitch1 = (RMTristateSwitch) findViewById(R.id.rm_triswitch1);
-        mRMTristateSwitch2 = (RMTristateSwitch) findViewById(R.id.rm_triswitch2);
-        mRMTristateSwitch3 = (RMTristateSwitch) findViewById(R.id.rm_triswitch3);
-        mRMTristateSwitch4 = (RMTristateSwitch) findViewById(R.id.rm_triswitch4);
-        mRMTristateSwitch5 = (RMTristateSwitch) findViewById(R.id.rm_triswitch5);
-        mRMTristateSwitch6 = (RMTristateSwitch) findViewById(R.id.rm_triswitch6);
+        mRMTristateSwitch1 = findViewById(R.id.rm_triswitch1);
+        mRMTristateSwitch2 = findViewById(R.id.rm_triswitch2);
+        mRMTristateSwitch3 = findViewById(R.id.rm_triswitch3);
+        mRMTristateSwitch4 = findViewById(R.id.rm_triswitch4);
+        mRMTristateSwitch5 = findViewById(R.id.rm_triswitch5);
+        mRMTristateSwitch6 = findViewById(R.id.rm_triswitch6);
 
-        mTxtRMTristateSwitchState1 = (TextView) findViewById(R.id.txt_rm_triswitch_state1);
-        mTxtRMTristateSwitchState2 = (TextView) findViewById(R.id.txt_rm_triswitch_state2);
-        mTxtRMTristateSwitchState3 = (TextView) findViewById(R.id.txt_rm_triswitch_state3);
-        mTxtRMTristateSwitchState4 = (TextView) findViewById(R.id.txt_rm_triswitch_state4);
-        mTxtRMTristateSwitchState5 = (TextView) findViewById(R.id.txt_rm_triswitch_state5);
-        mTxtRMTristateSwitchState6 = (TextView) findViewById(R.id.txt_rm_triswitch_state6);
+        mTxtRMTristateSwitchState1 = findViewById(R.id.txt_rm_triswitch_state1);
+        mTxtRMTristateSwitchState2 = findViewById(R.id.txt_rm_triswitch_state2);
+        mTxtRMTristateSwitchState3 = findViewById(R.id.txt_rm_triswitch_state3);
+        mTxtRMTristateSwitchState4 = findViewById(R.id.txt_rm_triswitch_state4);
+        mTxtRMTristateSwitchState5 = findViewById(R.id.txt_rm_triswitch_state5);
+        mTxtRMTristateSwitchState6 = findViewById(R.id.txt_rm_triswitch_state6);
 
-        mRMSwitch1 = (RMSwitch) findViewById(R.id.rm_switch1);
-        mRMSwitch2 = (RMSwitch) findViewById(R.id.rm_switch2);
-        mRMSwitch3 = (RMSwitch) findViewById(R.id.rm_switch3);
-        mRMSwitch4 = (RMSwitch) findViewById(R.id.rm_switch4);
-        mRMSwitch5 = (RMSwitch) findViewById(R.id.rm_switch5);
-        mRMSwitch6 = (RMSwitch) findViewById(R.id.rm_switch6);
-        mRMSwitch7 = (RMSwitch) findViewById(R.id.rm_switch7);
-        mRMSwitch8 = (RMSwitch) findViewById(R.id.rm_switch8);
-        mRMSwitch9 = (RMSwitch) findViewById(R.id.rm_switch9);
+        mRMSwitch1 = findViewById(R.id.rm_switch1);
+        mRMSwitch2 = findViewById(R.id.rm_switch2);
+        mRMSwitch3 = findViewById(R.id.rm_switch3);
+        mRMSwitch4 = findViewById(R.id.rm_switch4);
+        mRMSwitch5 = findViewById(R.id.rm_switch5);
+        mRMSwitch6 = findViewById(R.id.rm_switch6);
+        mRMSwitch7 = findViewById(R.id.rm_switch7);
+        mRMSwitch8 = findViewById(R.id.rm_switch8);
+        mRMSwitch9 = findViewById(R.id.rm_switch9);
 
-        mTxtRMSwitchState1 = (TextView) findViewById(R.id.txt_rm_switch_state1);
-        mTxtRMSwitchState2 = (TextView) findViewById(R.id.txt_rm_switch_state2);
-        mTxtRMSwitchState3 = (TextView) findViewById(R.id.txt_rm_switch_state3);
-        mTxtRMSwitchState4 = (TextView) findViewById(R.id.txt_rm_switch_state4);
-        mTxtRMSwitchState5 = (TextView) findViewById(R.id.txt_rm_switch_state5);
-        mTxtRMSwitchState6 = (TextView) findViewById(R.id.txt_rm_switch_state6);
-        mTxtRMSwitchState7 = (TextView) findViewById(R.id.txt_rm_switch_state7);
-        mTxtRMSwitchState8 = (TextView) findViewById(R.id.txt_rm_switch_state8);
-        mTxtRMSwitchState9 = (TextView) findViewById(R.id.txt_rm_switch_state9);
+        mTxtRMSwitchState1 = findViewById(R.id.txt_rm_switch_state1);
+        mTxtRMSwitchState2 = findViewById(R.id.txt_rm_switch_state2);
+        mTxtRMSwitchState3 = findViewById(R.id.txt_rm_switch_state3);
+        mTxtRMSwitchState4 = findViewById(R.id.txt_rm_switch_state4);
+        mTxtRMSwitchState5 = findViewById(R.id.txt_rm_switch_state5);
+        mTxtRMSwitchState6 = findViewById(R.id.txt_rm_switch_state6);
+        mTxtRMSwitchState7 = findViewById(R.id.txt_rm_switch_state7);
+        mTxtRMSwitchState8 = findViewById(R.id.txt_rm_switch_state8);
+        mTxtRMSwitchState9 = findViewById(R.id.txt_rm_switch_state9);
 
 
         mRMSwitch1.addSwitchObserver(new RMSwitch.RMSwitchObserver() {
