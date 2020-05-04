@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 ext {
     bintrayRepo = 'maven'
@@ -24,6 +26,16 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
+buildscript {
+    ext {
+        appcompat_version = "1.1.0"
+        core_ktx_version = "1.2.0"
+
+        junit_version = "4.12"
+        truth_version = "1.0.1"
+    }
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -40,12 +52,31 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs += "src/main/kotlin"
+            }
+        }
+        test {
+            java {
+                srcDirs += "src/test/kotlin"
+            }
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    testImplementation 'junit:junit:4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "com.google.truth:truth:$truth_version"
 }
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+repositories {
+    mavenCentral()
+}

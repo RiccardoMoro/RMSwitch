@@ -19,7 +19,10 @@ import java.util.List;
 
 /**
  * Created by Riccardo Moro on 29/07/2016.
+ *
+ * @deprecated use the new {@link #com.rm.switch.RmSwitch} instead.
  */
+@Deprecated
 public class RMSwitch extends RMAbstractSwitch {
     private static final String BUNDLE_KEY_CHECKED = "bundle_key_checked";
     private static final String BUNDLE_KEY_BKG_CHECKED_COLOR = "bundle_key_bkg_checked_color";
